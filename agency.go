@@ -5,6 +5,9 @@ import (
 	"fmt"
 )
 
+// An Agency is a single agency from a GTFS file.
+//
+// Fields correspond directly to columns in agency.txt.
 type Agency struct {
 	ID       string
 	Name     string

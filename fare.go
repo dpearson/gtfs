@@ -6,6 +6,9 @@ import (
 	"strconv"
 )
 
+// A Fare is a single fare type.
+//
+// Fields correspond directly to columns in fares.txt.
 type Fare struct {
 	ID               string
 	Price            string
@@ -20,10 +23,15 @@ type Fare struct {
 	ContainsZones    []string
 }
 
+// A PaymentMethod indicates where fares are paid.
 type PaymentMethod int
 
 const (
+	// PaymentMethodOnBoard indicates that fares are paid on board the vehicle.
 	PaymentMethodOnBoard PaymentMethod = iota
+
+	//PaymentMethodBeforeBoarding indicates that fares are paid prior to
+	// boarding the vehicle.
 	PaymentMethodBeforeBoarding
 )
 

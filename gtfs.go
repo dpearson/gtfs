@@ -21,6 +21,7 @@ var validFilenames = map[string]bool{
 	"feed_info.txt":       false,
 }
 
+// GTFS represents a single GTFS feed.
 type GTFS struct {
 	Agencies  []*Agency
 	Stops     []*Stop
@@ -41,6 +42,8 @@ type GTFS struct {
 	faresByID    map[string]*Fare
 }
 
+// Load reads the GTFS feed, which expected to be contained within a ZIP file,
+// from filePath.
 func Load(filePath string) (*GTFS, error) {
 	r, err := zip.OpenReader(filePath)
 	if err != nil {

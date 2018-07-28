@@ -5,6 +5,9 @@ import (
 	"fmt"
 )
 
+// A Service is a schedule of service over one or more routes.
+//
+// Fields correspond to columns in calendar.txt and calendar_dates.txt.
 type Service struct {
 	ID        string
 	Monday    bool

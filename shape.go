@@ -7,11 +7,13 @@ import (
 	"strconv"
 )
 
+// A Shape is a collection of points describing a trip's path.
 type Shape struct {
 	ID     string
 	Points []*ShapePoint
 }
 
+// A ShapePoint is a single point in a larger shape.
 type ShapePoint struct {
 	Latitude  float64
 	Longitude float64

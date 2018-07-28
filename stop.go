@@ -6,6 +6,9 @@ import (
 	"strconv"
 )
 
+// A Stop is a single stop served by an agency referenced in a GTFS feed.
+//
+// Fields correspond directly to columns in stops.txt.
 type Stop struct {
 	ID                 string
 	Code               string
@@ -23,11 +26,17 @@ type Stop struct {
 	parentStationID string
 }
 
+// LocationType specifies the specific type of a stop.
 type LocationType int
 
 const (
+	// LocationTypeStop is a stop where passengers board or exit a vehicle.
 	LocationTypeStop LocationType = iota
+
+	// LocationTypeStation is a station containing at least one stop.
 	LocationTypeStation
+
+	// LocationTypeStationEntrance is the entrance to a station.
 	LocationTypeStationEntrance
 )
 

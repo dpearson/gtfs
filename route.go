@@ -6,6 +6,9 @@ import (
 	"strconv"
 )
 
+// A Route is a single route.
+//
+// Fields correspond directly to columns in routes.txt.
 type Route struct {
 	ID          string
 	Agency      *Agency
@@ -19,16 +22,33 @@ type Route struct {
 	SortOrder   uint64
 }
 
+// RouteType specifies the type of vehicles operating on a route.
 type RouteType int
 
 const (
+	// RouteTypeLightRail indicates that the route is a light rail route.
 	RouteTypeLightRail RouteType = iota
+
+	// RouteTypeSubway indicates that the route is a subway or metro route.
 	RouteTypeSubway
+
+	// RouteTypeRail indicates that the route is an intercity/long-distance rail
+	// route.
 	RouteTypeRail
+
+	// RouteTypeBus indicates that the route is a bus route.
 	RouteTypeBus
+
+	// RouteTypeFerry indicates that the route is a ferry route.
 	RouteTypeFerry
+
+	// RouteTypeCableCar indicates that the route is a cable car route.
 	RouteTypeCableCar
+
+	// RouteTypeGondola indicates that the route is an aerial gondola route.
 	RouteTypeGondola
+
+	// RouteTypeFunicular indicates that the route is a funicular route.
 	RouteTypeFunicular
 )
 

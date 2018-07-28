@@ -6,6 +6,9 @@ import (
 	"strconv"
 )
 
+// A Transer is specific transfer between two stops.
+//
+// Fields correspond to columns in transfers.txt.
 type Transfer struct {
 	From                *Stop
 	To                  *Stop
@@ -13,12 +16,26 @@ type Transfer struct {
 	MinimumTransferTime uint64
 }
 
+// TransferType specifies the specific type of a transfer.
 type TransferType int
 
 const (
+	// TransferTypeRecommended indicates a recommended transfer point between
+	// two routes.
 	TransferTypeRecommended TransferType = iota
+
+	// TransferTypeTimed indicates that departures will wait for arriving
+	// passengers.
 	TransferTypeTimed
+
+	// TransferTypeMinimumTime indicates that a minimum amount of time is
+	// needed to transfer.
+	//
+	// Transfers with this type will have MinimumTransferTime set.
 	TransferTypeMinimumTime
+
+	// TransferTypeNone indicates that a transfer between those two stops is not
+	// possible.
 	TransferTypeNone
 )
 

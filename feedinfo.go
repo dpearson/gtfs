@@ -5,6 +5,9 @@ import (
 	"fmt"
 )
 
+// FeedInfo specifies global information about a GTFS feed.
+//
+// Fields correspond directly to columns in feed_info.txt.
 type FeedInfo struct {
 	PublisherName string
 	PublisherURL  string

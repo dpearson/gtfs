@@ -7,6 +7,10 @@ import (
 	"strconv"
 )
 
+// A Trip is a trip along a route with schedule information.
+//
+// Fields correspond directly to columns in trips.txt, stop_times.txt, and
+// frequencies.txt.
 type Trip struct {
 	ID                   string
 	Route                *Route
@@ -27,6 +31,7 @@ type Trip struct {
 	Stops          []*StopTime
 }
 
+// StopTime provides details on a specific stop in a trip.
 type StopTime struct {
 	Stop                  *Stop
 	ArrivalTime           string
@@ -39,44 +44,87 @@ type StopTime struct {
 	Timepoint             TimepointType
 }
 
+// WheelcharAccessible indicates whether a trip is accessible to passengers in
+// wheelchairs.
 type WheelchairAccessible int
 
 const (
+	// WheelchairAccessibleUnknown means that no wheelchair accessibility
+	// information is available.
 	WheelchairAccessibleUnknown WheelchairAccessible = iota
+
+	// WheelchairAccessibleYes means that at least one passenger in a wheelchair
+	// may be accommodated.
 	WheelchairAccessibleYes
+
+	// WheelchairAccessibleNo means that no passengers in wheelchairs may be
+	// accommodated.
 	WheelchairAccessibleNo
 )
 
+// BikesAllowed indicates whether bikes are allowed on a trip.
 type BikesAllowed int
 
 const (
+	// BikesAllowedUnknown means that no information on whether bikes are
+	// allowed is available.
 	BikesAllowedUnknown BikesAllowed = iota
+
+	// BikesAllowedYes means that at least one bike may be brought on this trip.
 	BikesAllowedYes
+
+	// BikesAllowedNo means that no bikes are allowed on this trip.
 	BikesAllowedNo
 )
 
+// PickupType indicates the type of pickup available at a stop.
 type PickupType int
 
 const (
+	// PickupTypeRegular indicates that regularly scheduled pickups are
+	// available.
 	PickupTypeRegular PickupType = iota
+
+	// PickupTypeNone indicates that no pickups are available.
 	PickupTypeNone
+
+	// PickupTypePhoneAgency indicates that riders must phone the transit agency
+	// to schedule pickups.
 	PickupTypePhoneAgency
+
+	// PickupTypeCoordinateWithDriver indicates that riders must coordinate with
+	// the vehicle driver to schedule pickups.
 	PickupTypeCoordinateWithDriver
 )
 
+// DropoffType indicates the type of dropoff available at a stop.
 type DropoffType int
 
 const (
+	// DropoffTypeRegular indicates that regularly scheduled dropoffs are
+	// available.
 	DropoffTypeRegular DropoffType = iota
+
+	// DropoffTypeNone indicates that no dropoffs are available.
 	DropoffTypeNone
+
+	// DropoffTypePhoneAgency indicates that riders must phone the transit
+	// agency to schedule dropoffs.
 	DropoffTypePhoneAgency
+
+	// DropoffTypeCoordinateWithDriver indicates that riders must coordinate
+	// with the vehicle driver to schedule dropoffs.
 	DropoffTypeCoordinateWithDriver
 )
 
+// TimepointType specifies whether stop times are exact or approximate.
 type TimepointType int
 
 const (
+	// TimepointTypeExact means that stop times are exact.
 	TimepointTypeExact TimepointType = iota
+
+	// TimepointTypeApproximate means that stop times are approximate.
 	TimepointTypeApproximate
 )
 
