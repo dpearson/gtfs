@@ -23,6 +23,9 @@ type Stop struct {
 	Timezone           string
 	WheelchairBoarding string // TODO: parse me
 
+	// Extensions:
+	PlatformCode string
+
 	parentStationID string
 }
 
@@ -53,6 +56,9 @@ var stopFields = map[string]bool{
 	"parent_station":      false,
 	"stop_timezone":       false,
 	"wheelchair_boarding": false,
+
+	// Extensions:
+	"platform_code": false,
 }
 
 func (g *GTFS) processStops(f *zip.File) error {
@@ -104,6 +110,8 @@ func (g *GTFS) processStops(f *zip.File) error {
 			LocationType:       locType,
 			Timezone:           row["stop_timezone"],
 			WheelchairBoarding: row["wheelchair_boarding"],
+
+			PlatformCode: row["platform_code"],
 
 			parentStationID: row["parent_station"],
 		}

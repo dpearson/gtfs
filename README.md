@@ -4,6 +4,13 @@
 
 This package allows [General Transit Feed Specification](https://developers.google.com/transit/gtfs/) files to be read and manipulated from Go.
 
+In addition to basic GTFS support, this package also supports the following [Google Transit Extensions to GTFS](https://developers.google.com/transit/gtfs/reference/gtfs-extensions):
+
+* [Station platforms](https://developers.google.com/transit/gtfs/reference/gtfs-extensions#station-platforms)
+* [Trip Diversions](https://developers.google.com/transit/gtfs/reference/gtfs-extensions#trip-diversions)
+
+Support for additional extensions may be added in the future.
+
 ## Installation ##
 
 All code can be downloaded with:

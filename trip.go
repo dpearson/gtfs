@@ -29,6 +29,8 @@ type Trip struct {
 	HeadwaySeconds uint64
 	ExactTimes     bool
 	Stops          []*StopTime
+
+	Exceptional bool
 }
 
 // StopTime provides details on a specific stop in a trip.
@@ -139,6 +141,9 @@ var tripFields = map[string]bool{
 	"shape_id":              false,
 	"wheelchair_accessible": false,
 	"bikes_allowed":         false,
+
+	// Extensions:
+	"exceptional": false,
 }
 
 var stopTimeFields = map[string]bool{
@@ -187,6 +192,16 @@ func (g *GTFS) processTrips(f *zip.File) error {
 			return err
 		}
 
+		exceptional := false
+		switch row["exceptional"] {
+		case "0", "":
+			exceptional = false
+		case "1":
+			exceptional = true
+		default:
+			return fmt.Errorf("Invalid value for exceptional: %s", row["exceptional"])
+		}
+
 		t := &Trip{
 			ID:                   row["trip_id"],
 			Route:                g.routeByID(row["route_id"]),
@@ -199,6 +214,8 @@ func (g *GTFS) processTrips(f *zip.File) error {
 			WheelchairAccessible: wheelchairAccessible,
 			BikesAllowed:         bikesAllowed,
 			AbsoluteTimes:        true,
+
+			Exceptional: exceptional,
 		}
 
 		g.Trips = append(g.Trips, t)
