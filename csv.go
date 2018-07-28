@@ -21,7 +21,7 @@ func readCSVWithHeadings(rc io.ReadCloser, fields map[string]bool) ([]map[string
 
 	for _, h := range headers {
 		if _, ok := fields[h]; !ok {
-			return res, fmt.Errorf("Invalid field: %s", h)
+			continue
 		}
 
 		headerFields = append(headerFields, h)
