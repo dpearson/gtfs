@@ -56,7 +56,7 @@ func Load(filePath string) (*GTFS, error) {
 	files := map[string]*zip.File{}
 	for _, f := range r.File {
 		if _, ok := validFilenames[f.Name]; !ok {
-			return g, fmt.Errorf("Invalid filename: %s", f.Name)
+			continue
 		}
 
 		files[f.Name] = f
