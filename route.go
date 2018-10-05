@@ -94,9 +94,19 @@ func (g *GTFS) processRoutes(f *zip.File) error {
 			return err
 		}
 
+		var agency *Agency
+		agencyID := row["agency_id"]
+		if agencyID != "" {
+			agency = g.agencyByID(row["agency_id"])
+		} else if len(g.Agencies) != 1 {
+			return fmt.Errorf("No agency_id specified, but there are %d agencies", len(g.Agencies))
+		} else {
+			agency = g.Agencies[0]
+		}
+
 		r := &Route{
 			ID:          row["route_id"],
-			Agency:      g.agencyByID(row["agency_id"]),
+			Agency:      agency,
 			ShortName:   row["route_short_name"],
 			LongName:    row["route_long_name"],
 			Description: row["route_desc"],
