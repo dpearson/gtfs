@@ -55,7 +55,9 @@ func (g *GTFS) processServices(f *zip.File) error {
 		return err
 	}
 
-	g.servicesByID = map[string]*Service{}
+	if g.servicesByID == nil {
+		g.servicesByID = map[string]*Service{}
+	}
 
 	for _, row := range res {
 		monday, err := parseBool(row["monday"])
@@ -125,6 +127,10 @@ func (g *GTFS) processServiceDates(f *zip.File) error {
 		return err
 	}
 
+	if g.servicesByID == nil {
+		g.servicesByID = map[string]*Service{}
+	}
+
 	for _, row := range res {
 		id := row["service_id"]
 		date := row["date"]
@@ -136,6 +142,7 @@ func (g *GTFS) processServiceDates(f *zip.File) error {
 				ID: id,
 			}
 			g.Services = append(g.Services, s)
+			g.servicesByID[s.ID] = s
 		}
 
 		switch exceptionType {
