@@ -11,7 +11,7 @@ var validFilenames = map[string]bool{
 	"routes.txt":          true,
 	"trips.txt":           true,
 	"stop_times.txt":      true,
-	"calendar.txt":        true,
+	"calendar.txt":        false,
 	"calendar_dates.txt":  false,
 	"fare_attributes.txt": false,
 	"fare_rules.txt":      false,
@@ -70,62 +70,67 @@ func Load(filePath string) (*GTFS, error) {
 
 	err = g.processAgencies(files["agency.txt"])
 	if err != nil {
-		return g, err
+		return g, fmt.Errorf("Error parsing agency.txt: %v", err)
 	}
 
 	err = g.processStops(files["stops.txt"])
 	if err != nil {
-		return g, err
+		return g, fmt.Errorf("Error parsing stops.txt: %v", err)
 	}
 
 	err = g.processRoutes(files["routes.txt"])
 	if err != nil {
-		return g, err
+		return g, fmt.Errorf("Error parsing routes.txt: %v", err)
 	}
 
-	err = g.processServices(files["calendar.txt"])
-	if err != nil {
-		return g, err
+	f, hasCalendar := files["calendar.txt"]
+	if hasCalendar {
+		err = g.processServices(f)
+		if err != nil {
+			return g, fmt.Errorf("Error parsing calendar.txt: %v", err)
+		}
 	}
 
 	f, ok := files["calendar_dates.txt"]
 	if ok {
 		err = g.processServiceDates(f)
 		if err != nil {
-			return g, err
+			return g, fmt.Errorf("Error parsing calendar_dates.txt: %v", err)
 		}
+	} else if !hasCalendar {
+		return g, fmt.Errorf("Either calendar.txt or calendar_dates.txt is required")
 	}
 
 	f, ok = files["shapes.txt"]
 	if ok {
 		err = g.processShapes(f)
 		if err != nil {
-			return g, err
+			return g, fmt.Errorf("Error parsing shapes.txt: %v", err)
 		}
 	}
 
 	err = g.processTrips(files["trips.txt"])
 	if err != nil {
-		return g, err
+		return g, fmt.Errorf("Error parsing trips.txt: %v", err)
 	}
 
 	err = g.processStopTimes(files["stop_times.txt"])
 	if err != nil {
-		return g, err
+		return g, fmt.Errorf("Error parsing stop_times.txt: %v", err)
 	}
 
 	f, ok = files["fare_attributes.txt"]
 	if ok {
 		err = g.processFares(f)
 		if err != nil {
-			return g, err
+			return g, fmt.Errorf("Error parsing fare_attributes.txt: %v", err)
 		}
 
 		f, ok = files["fare_rules.txt"]
 		if ok {
 			err = g.processFareRules(f)
 			if err != nil {
-				return g, err
+				return g, fmt.Errorf("Error parsing fare_rules.txt: %v", err)
 			}
 		}
 	}
@@ -134,7 +139,7 @@ func Load(filePath string) (*GTFS, error) {
 	if ok {
 		err = g.processFrequencies(f)
 		if err != nil {
-			return g, err
+			return g, fmt.Errorf("Error parsing frequencies.txt: %v", err)
 		}
 	}
 
@@ -142,7 +147,7 @@ func Load(filePath string) (*GTFS, error) {
 	if ok {
 		err = g.processTransfers(f)
 		if err != nil {
-			return g, err
+			return g, fmt.Errorf("Error parsing transfers.txt: %v", err)
 		}
 	}
 
@@ -150,7 +155,7 @@ func Load(filePath string) (*GTFS, error) {
 	if ok {
 		err = g.processFeedInfo(f)
 		if err != nil {
-			return g, err
+			return g, fmt.Errorf("Error parsing feed_info.txt: %v", err)
 		}
 	}
 

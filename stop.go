@@ -131,7 +131,7 @@ func (g *GTFS) processStops(f *zip.File) error {
 
 		parent, ok := g.stopsByID[s.parentStationID]
 		if !ok {
-			return fmt.Errorf("Invalid parent stop ID: %s", s.parentStationID)
+			return fmt.Errorf("Invalid parent stop ID: %s for stop %s", s.parentStationID, s.ID)
 		}
 
 		s.ParentStation = parent
