@@ -25,6 +25,7 @@ type Stop struct {
 
 	// Extensions:
 	PlatformCode string
+	VehicleType  RouteType
 
 	parentStationID string
 }
@@ -98,6 +99,14 @@ func (g *GTFS) processStops(f *zip.File) error {
 			return fmt.Errorf("Invalid location type: %s", row["location_type"])
 		}
 
+		var vehicleType RouteType
+		if row["vehicle_type"] != "" {
+			vehicleType, err = parseRouteType(row["vehicleType"])
+			if err != nil {
+				return fmt.Errorf("Invalid vehicle_type: %v", err)
+			}
+		}
+
 		s := &Stop{
 			ID:                 row["stop_id"],
 			Code:               row["stop_code"],
@@ -112,6 +121,7 @@ func (g *GTFS) processStops(f *zip.File) error {
 			WheelchairBoarding: row["wheelchair_boarding"],
 
 			PlatformCode: row["platform_code"],
+			VehicleType:  vehicleType,
 
 			parentStationID: row["parent_station"],
 		}

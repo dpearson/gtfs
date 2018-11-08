@@ -26,8 +26,11 @@ type Route struct {
 type RouteType int
 
 const (
+	// RouteTypeNotSpecified indicates that no route type was specified.
+	RouteTypeNotSpecified RouteType = iota
+
 	// RouteTypeLightRail indicates that the route is a light rail route.
-	RouteTypeLightRail RouteType = iota
+	RouteTypeLightRail
 
 	// RouteTypeSubway indicates that the route is a subway or metro route.
 	RouteTypeSubway
