@@ -11,7 +11,7 @@ import (
 //
 // Fields correspond directly to columns in trips.txt, stop_times.txt, and
 // frequencies.txt.
-type Trip struct {
+type Trip struct { // nolint: maligned
 	ID                   string
 	Route                *Route
 	Service              *Service
@@ -46,7 +46,7 @@ type StopTime struct {
 	Timepoint             TimepointType
 }
 
-// WheelcharAccessible indicates whether a trip is accessible to passengers in
+// WheelchairAccessible indicates whether a trip is accessible to passengers in
 // wheelchairs.
 type WheelchairAccessible int
 
@@ -172,7 +172,7 @@ func (g *GTFS) processTrips(f *zip.File) error {
 	if err != nil {
 		return err
 	}
-	defer rc.Close()
+	defer rc.Close() // nolint: errcheck
 
 	res, err := readCSVWithHeadings(rc, tripFields)
 	if err != nil {
@@ -230,7 +230,7 @@ func (g *GTFS) processStopTimes(f *zip.File) error {
 	if err != nil {
 		return err
 	}
-	defer rc.Close()
+	defer rc.Close() // nolint: errcheck
 
 	res, err := readCSVWithHeadings(rc, stopTimeFields)
 	if err != nil {
@@ -304,7 +304,7 @@ func (g *GTFS) processFrequencies(f *zip.File) error {
 	if err != nil {
 		return err
 	}
-	defer rc.Close()
+	defer rc.Close() // nolint: errcheck
 
 	res, err := readCSVWithHeadings(rc, frequencyFields)
 	if err != nil {

@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-// A Transer is specific transfer between two stops.
+// A Transfer is specific transfer between two stops.
 //
 // Fields correspond to columns in transfers.txt.
 type Transfer struct {
@@ -51,7 +51,7 @@ func (g *GTFS) processTransfers(f *zip.File) error {
 	if err != nil {
 		return err
 	}
-	defer rc.Close()
+	defer rc.Close() // nolint: errcheck
 
 	res, err := readCSVWithHeadings(rc, transferFields)
 	if err != nil {

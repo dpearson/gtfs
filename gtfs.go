@@ -49,7 +49,7 @@ func Load(filePath string) (*GTFS, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer r.Close()
+	defer r.Close() // nolint: errcheck
 
 	g := &GTFS{}
 

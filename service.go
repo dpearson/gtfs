@@ -48,7 +48,7 @@ func (g *GTFS) processServices(f *zip.File) error {
 	if err != nil {
 		return err
 	}
-	defer rc.Close()
+	defer rc.Close() // nolint: errcheck
 
 	res, err := readCSVWithHeadings(rc, serviceFields)
 	if err != nil {
@@ -120,7 +120,7 @@ func (g *GTFS) processServiceDates(f *zip.File) error {
 	if err != nil {
 		return err
 	}
-	defer rc.Close()
+	defer rc.Close() // nolint: errcheck
 
 	res, err := readCSVWithHeadings(rc, serviceDateFields)
 	if err != nil {

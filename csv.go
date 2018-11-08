@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-func readCSVWithHeadings(rc io.ReadCloser, fields map[string]bool) ([]map[string]string, error) {
+func readCSVWithHeadings(rc io.Reader, fields map[string]bool) ([]map[string]string, error) {
 	var headerFields []string
 	var res []map[string]string
 
