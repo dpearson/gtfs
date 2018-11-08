@@ -53,7 +53,60 @@ const (
 
 	// RouteTypeFunicular indicates that the route is a funicular route.
 	RouteTypeFunicular
+
+	// EXTENDED ROUTE TYPES
+	//
+	// The following types are extended route types proposed by Google, although
+	// they are not part of the GTFS standard.
+
+	RouteTypeExtendedRailwayService
+	RouteTypeExtendedHighSpeedRail
+	RouteTypeExtendedLongDistanceRail
+	RouteTypeExtendedInterRegionalRail
+	RouteTypeExtendedCarTransportRail
+	RouteTypeExtendedSleeperRail
+	RouteTypeExtendedRegionalRail
+	RouteTypeExtendedTouristRail
+	RouteTypeExtendedRailShuttle
+	RouteTypeExtendedSuburbanRail
+	RouteTypeExtendedReplacementRail
+	RouteTypeExtendedSpecialRail
+	RouteTypeExtendedLorryTransportRail
+	RouteTypeExtendedAllRail
+	RouteTypeExtendedCrossCountryRail
+	RouteTypeExtendedVehicleTransportRail
+	RouteTypeExtendedRackAndPinionRail
+	RouteTypeExtendedAdditionalRail
 )
+
+var routeTypes = map[string]RouteType{
+	"0":   RouteTypeLightRail,
+	"1":   RouteTypeSubway,
+	"2":   RouteTypeRail,
+	"3":   RouteTypeBus,
+	"4":   RouteTypeFerry,
+	"5":   RouteTypeCableCar,
+	"6":   RouteTypeGondola,
+	"7":   RouteTypeFunicular,
+	"100": RouteTypeExtendedRailwayService,
+	"101": RouteTypeExtendedHighSpeedRail,
+	"102": RouteTypeExtendedLongDistanceRail,
+	"103": RouteTypeExtendedInterRegionalRail,
+	"104": RouteTypeExtendedCarTransportRail,
+	"105": RouteTypeExtendedSleeperRail,
+	"106": RouteTypeExtendedRegionalRail,
+	"107": RouteTypeExtendedTouristRail,
+	"108": RouteTypeExtendedRailShuttle,
+	"109": RouteTypeExtendedSuburbanRail,
+	"110": RouteTypeExtendedReplacementRail,
+	"111": RouteTypeExtendedSpecialRail,
+	"112": RouteTypeExtendedLorryTransportRail,
+	"113": RouteTypeExtendedAllRail,
+	"114": RouteTypeExtendedCrossCountryRail,
+	"115": RouteTypeExtendedVehicleTransportRail,
+	"116": RouteTypeExtendedRackAndPinionRail,
+	"117": RouteTypeExtendedAdditionalRail,
+}
 
 var routeFields = map[string]bool{
 	"route_id":         true,
@@ -140,24 +193,10 @@ func (g *GTFS) routeByID(id string) *Route {
 }
 
 func parseRouteType(val string) (RouteType, error) {
-	switch val {
-	case "0":
-		return RouteTypeLightRail, nil
-	case "1":
-		return RouteTypeSubway, nil
-	case "2":
-		return RouteTypeRail, nil
-	case "3":
-		return RouteTypeBus, nil
-	case "4":
-		return RouteTypeFerry, nil
-	case "5":
-		return RouteTypeCableCar, nil
-	case "6":
-		return RouteTypeGondola, nil
-	case "7":
-		return RouteTypeFunicular, nil
-	default:
+	routeType, ok := routeTypes[val]
+	if !ok {
 		return 0, fmt.Errorf("Invalid route type: %s", val)
 	}
+
+	return routeType, nil
 }
