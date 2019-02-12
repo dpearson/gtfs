@@ -42,7 +42,7 @@ func (g *GTFS) processRoutes(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, routeFields)
+	res, err := readCSVWithHeadings(rc, routeFields, g.strictMode)
 	if err != nil {
 		return err
 	}

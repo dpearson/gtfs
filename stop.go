@@ -69,7 +69,7 @@ func (g *GTFS) processStops(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, stopFields)
+	res, err := readCSVWithHeadings(rc, stopFields, g.strictMode)
 	if err != nil {
 		return err
 	}
@@ -141,7 +141,11 @@ func (g *GTFS) processStops(f *zip.File) error {
 
 		parent, ok := g.stopsByID[s.parentStationID]
 		if !ok {
-			return fmt.Errorf("invalid parent stop ID: %s for stop %s", s.parentStationID, s.ID)
+			if g.strictMode {
+				return fmt.Errorf("invalid parent stop ID: %s for stop %s", s.parentStationID, s.ID)
+			}
+
+			continue
 		}
 
 		s.ParentStation = parent

@@ -36,7 +36,7 @@ func (g *GTFS) processShapes(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, shapeFields)
+	res, err := readCSVWithHeadings(rc, shapeFields, g.strictMode)
 	if err != nil {
 		return err
 	}

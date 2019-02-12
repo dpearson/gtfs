@@ -43,18 +43,38 @@ type GTFS struct {
 	tripsByID        map[string]*Trip
 	faresByID        map[string]*Fare
 	translationsByID map[string]map[string]*Translation
+	strictMode       bool
 }
 
-// Load reads the GTFS feed, which expected to be contained within a ZIP file,
+// ParsingOptions specifies options used when parsing GTFS files.
+type ParsingOptions struct {
+	StrictMode bool
+}
+
+// Load reads a GTFS feed, which is expected to be contained within a ZIP file,
 // from filePath.
+//
+// This function loads a GTFS file as permissively as possible (i.e. all errors
+// that can be ignored are ignored). For full control over options used when
+// parsing, use LoadWithOptions instead.
 func Load(filePath string) (*GTFS, error) {
+	return LoadWithOptions(filePath, ParsingOptions{
+		StrictMode: false,
+	})
+}
+
+// LoadWithOptions reads a GTFS feed, which is expected to be contained within
+// a ZIP file, from filePath using the specified options when parsing.
+func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 	r, err := zip.OpenReader(filePath)
 	if err != nil {
 		return nil, err
 	}
 	defer r.Close() // nolint: errcheck
 
-	g := &GTFS{}
+	g := &GTFS{
+		strictMode: opts.StrictMode,
+	}
 
 	files := map[string]*zip.File{}
 	for _, f := range r.File {

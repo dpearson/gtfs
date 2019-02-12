@@ -59,7 +59,7 @@ func (g *GTFS) processFares(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, fareFields)
+	res, err := readCSVWithHeadings(rc, fareFields, g.strictMode)
 	if err != nil {
 		return err
 	}
@@ -118,7 +118,7 @@ func (g *GTFS) processFareRules(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, fareRuleFields)
+	res, err := readCSVWithHeadings(rc, fareRuleFields, g.strictMode)
 	if err != nil {
 		return err
 	}

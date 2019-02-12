@@ -33,7 +33,7 @@ func (g *GTFS) processFeedInfo(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, feedInfoFields)
+	res, err := readCSVWithHeadings(rc, feedInfoFields, g.strictMode)
 	if err != nil {
 		return err
 	}

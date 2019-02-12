@@ -54,7 +54,7 @@ func (g *GTFS) processTranslations(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, translationFields)
+	res, err := readCSVWithHeadings(rc, translationFields, g.strictMode)
 	if err != nil {
 		return err
 	}

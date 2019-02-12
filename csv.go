@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-func readCSVWithHeadings(rc io.Reader, fields map[string]bool) ([]map[string]string, error) {
+func readCSVWithHeadings(rc io.Reader, fields map[string]bool, strictMode bool) ([]map[string]string, error) {
 	var headerFields []string
 	var res []map[string]string
 
@@ -40,7 +40,11 @@ func readCSVWithHeadings(rc io.Reader, fields map[string]bool) ([]map[string]str
 		rowMap := map[string]string{}
 		for i, v := range row {
 			if i >= len(headerFields) {
-				return res, fmt.Errorf("unexpected number of fields in row: %d", i+1)
+				if strictMode {
+					return res, fmt.Errorf("unexpected number of fields in row: %d", i+1)
+				}
+
+				continue
 			}
 
 			rowMap[headerFields[i]] = v

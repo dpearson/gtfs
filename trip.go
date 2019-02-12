@@ -174,7 +174,7 @@ func (g *GTFS) processTrips(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, tripFields)
+	res, err := readCSVWithHeadings(rc, tripFields, g.strictMode)
 	if err != nil {
 		return err
 	}
@@ -232,7 +232,7 @@ func (g *GTFS) processStopTimes(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, stopTimeFields)
+	res, err := readCSVWithHeadings(rc, stopTimeFields, g.strictMode)
 	if err != nil {
 		return err
 	}
@@ -306,7 +306,7 @@ func (g *GTFS) processFrequencies(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, frequencyFields)
+	res, err := readCSVWithHeadings(rc, frequencyFields, g.strictMode)
 	if err != nil {
 		return err
 	}

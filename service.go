@@ -50,7 +50,7 @@ func (g *GTFS) processServices(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, serviceFields)
+	res, err := readCSVWithHeadings(rc, serviceFields, g.strictMode)
 	if err != nil {
 		return err
 	}
@@ -122,7 +122,7 @@ func (g *GTFS) processServiceDates(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, serviceDateFields)
+	res, err := readCSVWithHeadings(rc, serviceDateFields, g.strictMode)
 	if err != nil {
 		return err
 	}

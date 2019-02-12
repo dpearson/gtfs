@@ -37,7 +37,7 @@ func (g *GTFS) processAgencies(f *zip.File) error {
 	}
 	defer rc.Close() // nolint: errcheck
 
-	res, err := readCSVWithHeadings(rc, agencyFields)
+	res, err := readCSVWithHeadings(rc, agencyFields, g.strictMode)
 	if err != nil {
 		return err
 	}
