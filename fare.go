@@ -14,7 +14,7 @@ type Fare struct {
 	Price            string
 	CurrencyType     string
 	PaymentMethod    PaymentMethod
-	Transfers        string // TODO: Parse me
+	Transfers        uint64
 	TransferDuration uint64
 
 	Routes           []*Route
@@ -81,12 +81,26 @@ func (g *GTFS) processFares(f *zip.File) error {
 			}
 		}
 
+		transferCount := uint64(0)
+		transferCountStr := row["transfers"]
+		if transferCountStr != "" {
+			// TODO: Decide if we want to validate this beyond ensuring that
+			// it's a non-negative integer.
+			//
+			// Both the GTFS spec and Google Transit have maximimum allowed
+			// values (2 and 5, respectively).
+			transferCount, err = strconv.ParseUint(transferCountStr, 10, 64)
+			if err != nil {
+				return fmt.Errorf("invalid transfer count: %v", err)
+			}
+		}
+
 		fare := &Fare{
 			ID:               row["fare_id"],
 			Price:            row["price"],
 			CurrencyType:     row["currency_type"],
 			PaymentMethod:    paymentMethod,
-			Transfers:        row["transfers"],
+			Transfers:        transferCount,
 			TransferDuration: transferDuration,
 		}
 
