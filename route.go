@@ -68,7 +68,7 @@ const (
 	RouteTypeExtendedRegionalRail
 	RouteTypeExtendedTouristRail
 	RouteTypeExtendedRailShuttle
-	RouteTypeExtendedSuburbanRail
+	RouteTypeExtendedSuburbanRail // used for route type codes 109 and 300
 	RouteTypeExtendedReplacementRail
 	RouteTypeExtendedSpecialRail
 	RouteTypeExtendedLorryTransportRail
@@ -78,7 +78,7 @@ const (
 	RouteTypeExtendedRackAndPinionRail
 	RouteTypeExtendedAdditionalRail
 
-	RouteTypeExtendedCoach
+	RouteTypeExtendedCoachService
 	RouteTypeExtendedInternationalCoach
 	RouteTypeExtendedNationalCoach
 	RouteTypeExtendedShuttleCoach
@@ -88,6 +88,13 @@ const (
 	RouteTypeExtendedTouristCoach
 	RouteTypeExtendedCommuterCoach
 	RouteTypeExtendedAllCoach
+
+	RouteTypeExtendedUrbanRailService
+	RouteTypeExtendedMetro       // used for route type codes 401 and 500
+	RouteTypeExtendedUnderground // used for route type codes 402 and 600
+	RouteTypeExtendedUrbanRail
+	RouteTypeExtendedAllUrbanRail
+	RouteTypeExtendedMonorail
 )
 
 var routeTypes = map[string]RouteType{
@@ -117,7 +124,7 @@ var routeTypes = map[string]RouteType{
 	"115": RouteTypeExtendedVehicleTransportRail,
 	"116": RouteTypeExtendedRackAndPinionRail,
 	"117": RouteTypeExtendedAdditionalRail,
-	"200": RouteTypeExtendedCoach,
+	"200": RouteTypeExtendedCoachService,
 	"201": RouteTypeExtendedInternationalCoach,
 	"202": RouteTypeExtendedNationalCoach,
 	"203": RouteTypeExtendedShuttleCoach,
@@ -127,6 +134,15 @@ var routeTypes = map[string]RouteType{
 	"207": RouteTypeExtendedTouristCoach,
 	"208": RouteTypeExtendedCommuterCoach,
 	"209": RouteTypeExtendedAllCoach,
+	"300": RouteTypeExtendedSuburbanRail,
+	"400": RouteTypeExtendedUrbanRailService,
+	"401": RouteTypeExtendedMetro,
+	"402": RouteTypeExtendedUnderground,
+	"403": RouteTypeExtendedUrbanRail,
+	"404": RouteTypeExtendedAllUrbanRail,
+	"405": RouteTypeExtendedMonorail,
+	"500": RouteTypeExtendedMetro,
+	"600": RouteTypeExtendedUnderground,
 }
 
 var routeFields = map[string]bool{
