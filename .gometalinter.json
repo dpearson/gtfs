@@ -10,7 +10,7 @@
         "structcheck",
         "maligned",
         "errcheck",
-        "megacheck",
+        "staticcheck",
         "ineffassign",
         "interfacer",
         "unconvert",

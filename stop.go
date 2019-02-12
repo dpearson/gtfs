@@ -79,12 +79,12 @@ func (g *GTFS) processStops(f *zip.File) error {
 	for _, row := range res {
 		lat, err := strconv.ParseFloat(row["stop_lat"], 64)
 		if err != nil {
-			return fmt.Errorf("Invalid latitude: %v", err)
+			return fmt.Errorf("invalid latitude: %v", err)
 		}
 
 		lon, err := strconv.ParseFloat(row["stop_lon"], 64)
 		if err != nil {
-			return fmt.Errorf("Invalid longitude: %v", err)
+			return fmt.Errorf("invalid longitude: %v", err)
 		}
 
 		var locType LocationType
@@ -96,14 +96,14 @@ func (g *GTFS) processStops(f *zip.File) error {
 		case "2":
 			locType = LocationTypeStationEntrance
 		default:
-			return fmt.Errorf("Invalid location type: %s", row["location_type"])
+			return fmt.Errorf("invalid location type: %s", row["location_type"])
 		}
 
 		var vehicleType RouteType
 		if row["vehicle_type"] != "" {
 			vehicleType, err = parseRouteType(row["vehicleType"])
 			if err != nil {
-				return fmt.Errorf("Invalid vehicle_type: %v", err)
+				return fmt.Errorf("invalid vehicle_type: %v", err)
 			}
 		}
 
@@ -136,12 +136,12 @@ func (g *GTFS) processStops(f *zip.File) error {
 		}
 
 		if s.LocationType != LocationTypeStop {
-			return fmt.Errorf("Invalid location type with parent station: %d", s.LocationType)
+			return fmt.Errorf("invalid location type with parent station: %d", s.LocationType)
 		}
 
 		parent, ok := g.stopsByID[s.parentStationID]
 		if !ok {
-			return fmt.Errorf("Invalid parent stop ID: %s for stop %s", s.parentStationID, s.ID)
+			return fmt.Errorf("invalid parent stop ID: %s for stop %s", s.parentStationID, s.ID)
 		}
 
 		s.ParentStation = parent

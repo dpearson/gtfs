@@ -199,7 +199,7 @@ func (g *GTFS) processTrips(f *zip.File) error {
 		case "1":
 			exceptional = true
 		default:
-			return fmt.Errorf("Invalid value for exceptional: %s", row["exceptional"])
+			return fmt.Errorf("invalid value for exceptional: %s", row["exceptional"])
 		}
 
 		t := &Trip{
@@ -241,7 +241,7 @@ func (g *GTFS) processStopTimes(f *zip.File) error {
 	for _, row := range res {
 		seq, err := strconv.ParseUint(row["stop_sequence"], 10, 64)
 		if err != nil {
-			return fmt.Errorf("Invalid stop sequence: %v", err)
+			return fmt.Errorf("invalid stop sequence: %v", err)
 		}
 
 		distStr := row["shape_dist_traveled"]
@@ -249,7 +249,7 @@ func (g *GTFS) processStopTimes(f *zip.File) error {
 		if distStr != "" {
 			dist, err = strconv.ParseFloat(distStr, 64)
 			if err != nil {
-				return fmt.Errorf("Invalid distance: %v", err)
+				return fmt.Errorf("invalid distance: %v", err)
 			}
 		}
 
@@ -314,12 +314,12 @@ func (g *GTFS) processFrequencies(f *zip.File) error {
 	for _, row := range res {
 		t := g.tripByID(row["trip_id"])
 		if t == nil {
-			return fmt.Errorf("Invalid trip id: %s", row["trip_id"])
+			return fmt.Errorf("invalid trip id: %s", row["trip_id"])
 		}
 
 		headwaySecs, err := strconv.ParseUint(row["headway_secs"], 10, 64)
 		if err != nil {
-			return fmt.Errorf("Invalid headway seconds: %v", err)
+			return fmt.Errorf("invalid headway seconds: %v", err)
 		}
 
 		var exactTimes bool
@@ -329,7 +329,7 @@ func (g *GTFS) processFrequencies(f *zip.File) error {
 		case "0", "":
 			exactTimes = false
 		default:
-			return fmt.Errorf("Invalid exact times: %s", row["exact_times"])
+			return fmt.Errorf("invalid exact times: %s", row["exact_times"])
 		}
 
 		t.AbsoluteTimes = false
@@ -355,7 +355,7 @@ func parseWheelchairAccessible(val string) (WheelchairAccessible, error) {
 	case "2":
 		return WheelchairAccessibleNo, nil
 	default:
-		return WheelchairAccessibleUnknown, fmt.Errorf("Invalid wheelchair accessible value: %s", val)
+		return WheelchairAccessibleUnknown, fmt.Errorf("invalid wheelchair accessible value: %s", val)
 	}
 }
 
@@ -368,7 +368,7 @@ func parseBikesAllowed(val string) (BikesAllowed, error) {
 	case "2":
 		return BikesAllowedNo, nil
 	default:
-		return BikesAllowedUnknown, fmt.Errorf("Invalid bikes allowed value: %s", val)
+		return BikesAllowedUnknown, fmt.Errorf("invalid bikes allowed value: %s", val)
 	}
 }
 
@@ -383,7 +383,7 @@ func parsePickupType(val string) (PickupType, error) {
 	case "3":
 		return PickupTypeCoordinateWithDriver, nil
 	default:
-		return PickupTypeRegular, fmt.Errorf("Invalid pickup type: %s", val)
+		return PickupTypeRegular, fmt.Errorf("invalid pickup type: %s", val)
 	}
 }
 
@@ -398,7 +398,7 @@ func parseDropoffType(val string) (DropoffType, error) {
 	case "3":
 		return DropoffTypeCoordinateWithDriver, nil
 	default:
-		return DropoffTypeRegular, fmt.Errorf("Invalid drop off type: %s", val)
+		return DropoffTypeRegular, fmt.Errorf("invalid drop off type: %s", val)
 	}
 }
 
@@ -409,6 +409,6 @@ func parseTimepointType(val string) (TimepointType, error) {
 	case "0":
 		return TimepointTypeApproximate, nil
 	default:
-		return TimepointTypeExact, fmt.Errorf("Invalid timepoint type: %s", val)
+		return TimepointTypeExact, fmt.Errorf("invalid timepoint type: %s", val)
 	}
 }

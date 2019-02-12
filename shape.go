@@ -46,12 +46,12 @@ func (g *GTFS) processShapes(f *zip.File) error {
 		id := row["shape_id"]
 		lat, err := strconv.ParseFloat(row["shape_pt_lat"], 64)
 		if err != nil {
-			return fmt.Errorf("Invalid latitude: %v", err)
+			return fmt.Errorf("invalid latitude: %v", err)
 		}
 
 		lon, err := strconv.ParseFloat(row["shape_pt_lon"], 64)
 		if err != nil {
-			return fmt.Errorf("Invalid longitude: %v", err)
+			return fmt.Errorf("invalid longitude: %v", err)
 		}
 
 		distStr := row["shape_dist_traveled"]
@@ -59,13 +59,13 @@ func (g *GTFS) processShapes(f *zip.File) error {
 		if distStr != "" {
 			dist, err = strconv.ParseFloat(distStr, 64)
 			if err != nil {
-				return fmt.Errorf("Invalid distance: %v", err)
+				return fmt.Errorf("invalid distance: %v", err)
 			}
 		}
 
 		seq, err := strconv.ParseUint(row["shape_pt_sequence"], 10, 64)
 		if err != nil {
-			return fmt.Errorf("Invalid point sequence: %v", err)
+			return fmt.Errorf("invalid point sequence: %v", err)
 		}
 
 		pt := &ShapePoint{

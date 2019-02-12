@@ -141,7 +141,7 @@ func (g *GTFS) processRoutes(f *zip.File) error {
 		if sortOrderStr != "" {
 			sortOrder, err = strconv.ParseUint(row["route_sort_order"], 10, 64)
 			if err != nil {
-				return fmt.Errorf("Invalid route sort order: %v", err)
+				return fmt.Errorf("invalid route sort order: %v", err)
 			}
 		}
 
@@ -155,7 +155,7 @@ func (g *GTFS) processRoutes(f *zip.File) error {
 		if agencyID != "" {
 			agency = g.agencyByID(row["agency_id"])
 		} else if len(g.Agencies) != 1 {
-			return fmt.Errorf("No agency_id specified, but there are %d agencies", len(g.Agencies))
+			return fmt.Errorf("no agency_id specified, but there are %d agencies", len(g.Agencies))
 		} else {
 			agency = g.Agencies[0]
 		}
@@ -195,7 +195,7 @@ func (g *GTFS) routeByID(id string) *Route {
 func parseRouteType(val string) (RouteType, error) {
 	routeType, ok := routeTypes[val]
 	if !ok {
-		return 0, fmt.Errorf("Invalid route type: %s", val)
+		return 0, fmt.Errorf("invalid route type: %s", val)
 	}
 
 	return routeType, nil

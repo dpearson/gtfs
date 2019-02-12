@@ -9,6 +9,6 @@ func parseBool(val string) (bool, error) {
 	case "1":
 		return true, nil
 	default:
-		return false, fmt.Errorf("Invalid value: %s", val)
+		return false, fmt.Errorf("invalid value: %s", val)
 	}
 }

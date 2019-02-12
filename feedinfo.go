@@ -39,7 +39,7 @@ func (g *GTFS) processFeedInfo(f *zip.File) error {
 	}
 
 	if len(res) != 1 {
-		return fmt.Errorf("Expected only one row of feed info, but there are %d rows", len(res))
+		return fmt.Errorf("expected only one row of feed info, but there are %d rows", len(res))
 	}
 
 	row := res[0]

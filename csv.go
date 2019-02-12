@@ -40,7 +40,7 @@ func readCSVWithHeadings(rc io.Reader, fields map[string]bool) ([]map[string]str
 		rowMap := map[string]string{}
 		for i, v := range row {
 			if i >= len(headerFields) {
-				return res, fmt.Errorf("Unexpected number of fields in row: %d", i+1)
+				return res, fmt.Errorf("unexpected number of fields in row: %d", i+1)
 			}
 
 			rowMap[headerFields[i]] = v

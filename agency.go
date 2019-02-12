@@ -64,7 +64,7 @@ func (g *GTFS) processAgencies(f *zip.File) error {
 	}
 
 	if hasAgencyWithoutID && len(g.Agencies) > 1 {
-		return fmt.Errorf("Agency IDs must be specified")
+		return fmt.Errorf("agency IDs must be specified")
 	}
 
 	return nil

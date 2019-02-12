@@ -64,7 +64,7 @@ func (g *GTFS) processTransfers(f *zip.File) error {
 		if minTimeStr != "" {
 			minTime, err = strconv.ParseUint(minTimeStr, 10, 64)
 			if err != nil {
-				return fmt.Errorf("Invalid min_transfer_time: %v", err)
+				return fmt.Errorf("invalid min_transfer_time: %v", err)
 			}
 		}
 
@@ -97,6 +97,6 @@ func parseTransferType(val string) (TransferType, error) {
 	case "3":
 		return TransferTypeNone, nil
 	default:
-		return TransferTypeRecommended, fmt.Errorf("Invalid transfer type: %s", val)
+		return TransferTypeRecommended, fmt.Errorf("invalid transfer type: %s", val)
 	}
 }

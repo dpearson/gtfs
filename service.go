@@ -151,7 +151,7 @@ func (g *GTFS) processServiceDates(f *zip.File) error {
 		case "2":
 			s.ExceptDates = append(s.ExceptDates, date)
 		default:
-			return fmt.Errorf("Invalid exception_type: %s", exceptionType)
+			return fmt.Errorf("invalid exception_type: %s", exceptionType)
 		}
 	}
 

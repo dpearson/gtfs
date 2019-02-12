@@ -77,7 +77,7 @@ func (g *GTFS) processFares(f *zip.File) error {
 		if transferDurationStr != "" {
 			transferDuration, err = strconv.ParseUint(transferDurationStr, 10, 64)
 			if err != nil {
-				return fmt.Errorf("Invalid transfer duration: %v", err)
+				return fmt.Errorf("invalid transfer duration: %v", err)
 			}
 		}
 
@@ -112,14 +112,14 @@ func (g *GTFS) processFareRules(f *zip.File) error {
 	for _, row := range res {
 		fare := g.fareByID(row["fare_id"])
 		if fare == nil {
-			return fmt.Errorf("Invalid fare ID: %s", row["fare_id"])
+			return fmt.Errorf("invalid fare ID: %s", row["fare_id"])
 		}
 
 		routeID := row["route_id"]
 		if routeID != "" {
 			r := g.routeByID(routeID)
 			if r == nil {
-				return fmt.Errorf("Invalid route ID: %s", row["route_id"])
+				return fmt.Errorf("invalid route ID: %s", row["route_id"])
 			}
 
 			fare.Routes = append(fare.Routes, r)
@@ -155,6 +155,6 @@ func parsePaymentMethod(val string) (PaymentMethod, error) {
 	case "1":
 		return PaymentMethodBeforeBoarding, nil
 	default:
-		return PaymentMethodOnBoard, fmt.Errorf("Invalid payment method: %s", val)
+		return PaymentMethodOnBoard, fmt.Errorf("invalid payment method: %s", val)
 	}
 }
