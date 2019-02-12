@@ -77,6 +77,17 @@ const (
 	RouteTypeExtendedVehicleTransportRail
 	RouteTypeExtendedRackAndPinionRail
 	RouteTypeExtendedAdditionalRail
+
+	RouteTypeExtendedCoach
+	RouteTypeExtendedInternationalCoach
+	RouteTypeExtendedNationalCoach
+	RouteTypeExtendedShuttleCoach
+	RouteTypeExtendedRegionalCoach
+	RouteTypeExtendedSpecialCoach
+	RouteTypeExtendedSightseeingCoach
+	RouteTypeExtendedTouristCoach
+	RouteTypeExtendedCommuterCoach
+	RouteTypeExtendedAllCoach
 )
 
 var routeTypes = map[string]RouteType{
@@ -106,6 +117,16 @@ var routeTypes = map[string]RouteType{
 	"115": RouteTypeExtendedVehicleTransportRail,
 	"116": RouteTypeExtendedRackAndPinionRail,
 	"117": RouteTypeExtendedAdditionalRail,
+	"200": RouteTypeExtendedCoach,
+	"201": RouteTypeExtendedInternationalCoach,
+	"202": RouteTypeExtendedNationalCoach,
+	"203": RouteTypeExtendedShuttleCoach,
+	"204": RouteTypeExtendedRegionalCoach,
+	"205": RouteTypeExtendedSpecialCoach,
+	"206": RouteTypeExtendedSightseeingCoach,
+	"207": RouteTypeExtendedTouristCoach,
+	"208": RouteTypeExtendedCommuterCoach,
+	"209": RouteTypeExtendedAllCoach,
 }
 
 var routeFields = map[string]bool{
