@@ -19,27 +19,30 @@ var validFilenames = map[string]bool{
 	"frequencies.txt":     false,
 	"transfers.txt":       false,
 	"feed_info.txt":       false,
+	"translations.txt":    false,
 }
 
 // GTFS represents a single GTFS feed.
 type GTFS struct {
-	Agencies  []*Agency
-	Stops     []*Stop
-	Routes    []*Route
-	Services  []*Service
-	Shapes    []*Shape
-	Trips     []*Trip
-	Fares     []*Fare
-	Transfers []*Transfer
-	FeedInfo  FeedInfo
+	Agencies     []*Agency
+	Stops        []*Stop
+	Routes       []*Route
+	Services     []*Service
+	Shapes       []*Shape
+	Trips        []*Trip
+	Fares        []*Fare
+	Transfers    []*Transfer
+	FeedInfo     FeedInfo
+	Translations []*Translation
 
-	agenciesByID map[string]*Agency
-	stopsByID    map[string]*Stop
-	routesByID   map[string]*Route
-	servicesByID map[string]*Service
-	shapesByID   map[string]*Shape
-	tripsByID    map[string]*Trip
-	faresByID    map[string]*Fare
+	agenciesByID     map[string]*Agency
+	stopsByID        map[string]*Stop
+	routesByID       map[string]*Route
+	servicesByID     map[string]*Service
+	shapesByID       map[string]*Shape
+	tripsByID        map[string]*Trip
+	faresByID        map[string]*Fare
+	translationsByID map[string]map[string]*Translation
 }
 
 // Load reads the GTFS feed, which expected to be contained within a ZIP file,
@@ -156,6 +159,14 @@ func Load(filePath string) (*GTFS, error) {
 		err = g.processFeedInfo(f)
 		if err != nil {
 			return g, fmt.Errorf("error parsing feed_info.txt: %v", err)
+		}
+	}
+
+	f, ok = files["translations.txt"]
+	if ok {
+		err = g.processTranslations(f)
+		if err != nil {
+			return g, fmt.Errorf("error parsing translations.txt: %v", err)
 		}
 	}
 

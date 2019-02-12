@@ -10,6 +10,7 @@ In addition to basic GTFS support, this package also supports the following [Goo
 * [Station vehicle types](https://developers.google.com/transit/gtfs/reference/gtfs-extensions#station-vehicle-types)
 * [Station platforms](https://developers.google.com/transit/gtfs/reference/gtfs-extensions#station-platforms)
 * [Trip diversions](https://developers.google.com/transit/gtfs/reference/gtfs-extensions#trip-diversions)
+* [Translations](https://developers.google.com/transit/gtfs/reference/gtfs-extensions#translations)
 
 Support for additional extensions may be added in the future.
 
