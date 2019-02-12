@@ -16,6 +16,8 @@ import (
 // 	}
 //
 // would translate "station-001" to "City Center" in English.
+//
+// Fields correspond directly to columns in translations.txt.
 type Translation struct {
 	ID          string
 	Language    string
