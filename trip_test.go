@@ -217,3 +217,76 @@ func Test_parseTimepointType(t *testing.T) {
 		})
 	}
 }
+
+func Test_parseWheelchairAccessible(t *testing.T) {
+	type args struct {
+		val string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    WheelchairAccessible
+		wantErr bool
+	}{
+		{
+			name: "Unknown (empty)",
+			args: args{
+				val: "",
+			},
+			want:    WheelchairAccessibleUnknown,
+			wantErr: false,
+		},
+		{
+			name: "Unknown (zero)",
+			args: args{
+				val: "0",
+			},
+			want:    WheelchairAccessibleUnknown,
+			wantErr: false,
+		},
+		{
+			name: "Yes",
+			args: args{
+				val: "1",
+			},
+			want:    WheelchairAccessibleYes,
+			wantErr: false,
+		},
+		{
+			name: "No",
+			args: args{
+				val: "2",
+			},
+			want:    WheelchairAccessibleNo,
+			wantErr: false,
+		},
+		{
+			name: "Invalid (3)",
+			args: args{
+				val: "3",
+			},
+			want:    WheelchairAccessibleUnknown,
+			wantErr: true,
+		},
+		{
+			name: "Invalid (foo)",
+			args: args{
+				val: "foo",
+			},
+			want:    WheelchairAccessibleUnknown,
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := parseWheelchairAccessible(tt.args.val)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("parseWheelchairAccessible() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("parseWheelchairAccessible() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
