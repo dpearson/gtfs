@@ -6,11 +6,11 @@ import (
 	"io"
 )
 
-func readCSVWithHeadings(rc io.Reader, fields map[string]bool, strictMode bool) ([]map[string]string, error) {
+func readCSVWithHeadings(r io.Reader, fields map[string]bool, strictMode bool) ([]map[string]string, error) {
 	var headerFields []string
 	var res []map[string]string
 
-	csvFile := csv.NewReader(rc)
+	csvFile := csv.NewReader(r)
 	csvFile.FieldsPerRecord = -1 // Ignore mismatched numbers of fields
 	csvFile.LazyQuotes = true    // Allow different quoting styles
 
