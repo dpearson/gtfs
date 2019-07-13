@@ -1,6 +1,7 @@
 package gtfs
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -286,6 +287,143 @@ func Test_parseWheelchairAccessible(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("parseWheelchairAccessible() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_parseExceptional(t *testing.T) {
+	type args struct {
+		val string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    bool
+		wantErr bool
+	}{
+		{
+			name: "False (empty)",
+			args: args{
+				val: "",
+			},
+			want:    false,
+			wantErr: false,
+		},
+		{
+			name: "False (zero)",
+			args: args{
+				val: "0",
+			},
+			want:    false,
+			wantErr: false,
+		},
+		{
+			name: "True",
+			args: args{
+				val: "1",
+			},
+			want:    true,
+			wantErr: false,
+		},
+		{
+			name: "Invalid (2)",
+			args: args{
+				val: "2",
+			},
+			want:    false,
+			wantErr: true,
+		},
+		{
+			name: "Invalid (foo)",
+			args: args{
+				val: "foo",
+			},
+			want:    false,
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := parseExceptional(tt.args.val)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("parseExceptional() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("parseExceptional() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGTFS_tripByID(t *testing.T) {
+	testTrip1 := &Trip{
+		ID: "test_trip_1",
+	}
+	type fields struct {
+		Trips     []*Trip
+		tripsByID map[string]*Trip
+	}
+	type args struct {
+		id string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   *Trip
+	}{
+		{
+			name: "Exists",
+			fields: fields{
+				Trips: []*Trip{
+					testTrip1,
+				},
+				tripsByID: map[string]*Trip{
+					"test_trip_1": testTrip1,
+				},
+			},
+			args: args{
+				id: "test_trip_1",
+			},
+			want: testTrip1,
+		},
+		{
+			name: "Doesn't Exist",
+			fields: fields{
+				Trips: []*Trip{
+					testTrip1,
+				},
+				tripsByID: map[string]*Trip{
+					"test_trip_1": testTrip1,
+				},
+			},
+			args: args{
+				id: "test_trip_2",
+			},
+			want: nil,
+		},
+		{
+			name: "nil map",
+			fields: fields{
+				Trips:     nil,
+				tripsByID: nil,
+			},
+			args: args{
+				id: "test_trip_1",
+			},
+			want: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := &GTFS{
+				Trips:     tt.fields.Trips,
+				tripsByID: tt.fields.tripsByID,
+			}
+			if got := g.tripByID(tt.args.id); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GTFS.tripByID() = %v, want %v", got, tt.want)
 			}
 		})
 	}
