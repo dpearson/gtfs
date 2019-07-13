@@ -192,14 +192,9 @@ func (g *GTFS) processTrips(f *zip.File) error {
 			return err
 		}
 
-		exceptional := false
-		switch row["exceptional"] {
-		case "0", "":
-			exceptional = false
-		case "1":
-			exceptional = true
-		default:
-			return fmt.Errorf("invalid value for exceptional: %s", row["exceptional"])
+		exceptional, err := parseExceptional(row["exceptional"])
+		if err != nil {
+			return err
 		}
 
 		t := &Trip{
@@ -410,5 +405,16 @@ func parseTimepointType(val string) (TimepointType, error) {
 		return TimepointTypeApproximate, nil
 	default:
 		return TimepointTypeExact, fmt.Errorf("invalid timepoint type: %s", val)
+	}
+}
+
+func parseExceptional(val string) (bool, error) {
+	switch val {
+	case "0", "":
+		return false, nil
+	case "1":
+		return true, nil
+	default:
+		return false, fmt.Errorf("invalid value for exceptional: %s", val)
 	}
 }
