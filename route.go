@@ -6,6 +6,13 @@ import (
 	"strconv"
 )
 
+// DefaultRouteColor is the default color for a route with no specified color.
+const DefaultRouteColor = "FFFFFF"
+
+// DefaultRouteTextColor is the default text color for a route with no specified
+// text color.
+const DefaultRouteTextColor = "000000"
+
 // A Route is a single route.
 //
 // Fields correspond directly to columns in routes.txt.
@@ -88,11 +95,11 @@ func (g *GTFS) processRoutes(f *zip.File) error {
 		}
 
 		if r.Color == "" {
-			r.Color = "FFFFFF"
+			r.Color = DefaultRouteColor
 		}
 
 		if r.TextColor == "" {
-			r.TextColor = "000000"
+			r.TextColor = DefaultRouteTextColor
 		}
 
 		g.Routes = append(g.Routes, r)
