@@ -188,7 +188,7 @@ func TestGTFS_processTranslations(t *testing.T) {
 		args                 args
 		wantErr              bool
 		wantTranslations     []*Translation
-		wantTranslationsById map[string]map[string]*Translation
+		wantTranslationsByID map[string]map[string]*Translation
 	}{
 		{
 			name: "Valid",
@@ -203,7 +203,7 @@ func TestGTFS_processTranslations(t *testing.T) {
 				testTranslation1,
 				testTranslation2,
 			},
-			wantTranslationsById: map[string]map[string]*Translation{
+			wantTranslationsByID: map[string]map[string]*Translation{
 				"foo": map[string]*Translation{
 					"en": testTranslation1,
 					"es": testTranslation2,
@@ -220,7 +220,7 @@ func TestGTFS_processTranslations(t *testing.T) {
 			},
 			wantErr:              true,
 			wantTranslations:     nil,
-			wantTranslationsById: nil,
+			wantTranslationsByID: nil,
 		},
 	}
 	for _, tt := range tests {
@@ -234,8 +234,8 @@ func TestGTFS_processTranslations(t *testing.T) {
 			if !reflect.DeepEqual(g.Translations, tt.wantTranslations) {
 				t.Errorf("GTFS.processTranslations() Translations = %v, wantTranslations %v", g.Translations, tt.wantTranslations)
 			}
-			if !reflect.DeepEqual(g.translationsByID, tt.wantTranslationsById) {
-				t.Errorf("GTFS.processTranslations() translationsByID = %v, wantTranslationsById %v", g.translationsByID, tt.wantTranslationsById)
+			if !reflect.DeepEqual(g.translationsByID, tt.wantTranslationsByID) {
+				t.Errorf("GTFS.processTranslations() translationsByID = %v, wantTranslationsByID %v", g.translationsByID, tt.wantTranslationsByID)
 			}
 		})
 	}
