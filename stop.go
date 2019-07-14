@@ -60,6 +60,7 @@ var stopFields = map[string]bool{
 
 	// Extensions:
 	"platform_code": false,
+	"vehicle_type":  false,
 }
 
 func (g *GTFS) processStops(r io.Reader) error {
@@ -81,21 +82,14 @@ func (g *GTFS) processStops(r io.Reader) error {
 			return fmt.Errorf("invalid longitude: %v", err)
 		}
 
-		var locType LocationType
-		switch row["location_type"] {
-		case "0", "":
-			locType = LocationTypeStop
-		case "1":
-			locType = LocationTypeStation
-		case "2":
-			locType = LocationTypeStationEntrance
-		default:
-			return fmt.Errorf("invalid location type: %s", row["location_type"])
+		locType, err := parseLocationType(row["location_type"])
+		if err != nil {
+			return err
 		}
 
 		var vehicleType RouteType
 		if row["vehicle_type"] != "" {
-			vehicleType, err = parseRouteType(row["vehicleType"])
+			vehicleType, err = parseRouteType(row["vehicle_type"])
 			if err != nil {
 				return fmt.Errorf("invalid vehicle_type: %v", err)
 			}
@@ -150,4 +144,17 @@ func (g *GTFS) processStops(r io.Reader) error {
 
 func (g *GTFS) stopByID(id string) *Stop {
 	return g.stopsByID[id]
+}
+
+func parseLocationType(val string) (LocationType, error) {
+	switch val {
+	case "0", "":
+		return LocationTypeStop, nil
+	case "1":
+		return LocationTypeStation, nil
+	case "2":
+		return LocationTypeStationEntrance, nil
+	default:
+		return LocationTypeStop, fmt.Errorf("invalid location type: %s", val)
+	}
 }
