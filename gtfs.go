@@ -91,7 +91,7 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 		}
 	}
 
-	err = g.processAgencies(files["agency.txt"])
+	err = callWithOpenedReader(files["agency.txt"], g.processAgencies)
 	if err != nil {
 		return g, fmt.Errorf("error parsing agency.txt: %v", err)
 	}

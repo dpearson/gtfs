@@ -1,8 +1,8 @@
 package gtfs
 
 import (
-	"archive/zip"
 	"fmt"
+	"io"
 )
 
 // An Agency is a single agency from a GTFS file.
@@ -30,14 +30,8 @@ var agencyFields = map[string]bool{
 	"agency_email":    false,
 }
 
-func (g *GTFS) processAgencies(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, agencyFields, g.strictMode)
+func (g *GTFS) processAgencies(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, agencyFields, g.strictMode)
 	if err != nil {
 		return err
 	}
