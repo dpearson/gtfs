@@ -91,12 +91,12 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 		}
 	}
 
-	err = callWithOpenedReader(files["agency.txt"], g.processAgencies)
+	err = callWithOpenedReader(g.processAgencies, files["agency.txt"])
 	if err != nil {
 		return g, fmt.Errorf("error parsing agency.txt: %v", err)
 	}
 
-	err = callWithOpenedReader(files["stops.txt"], g.processStops)
+	err = callWithOpenedReader(g.processStops, files["stops.txt"])
 	if err != nil {
 		return g, fmt.Errorf("error parsing stops.txt: %v", err)
 	}
@@ -126,7 +126,7 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 
 	f, ok = files["shapes.txt"]
 	if ok {
-		err = callWithOpenedReader(f, g.processShapes)
+		err = callWithOpenedReader(g.processShapes, f)
 		if err != nil {
 			return g, fmt.Errorf("error parsing shapes.txt: %v", err)
 		}
@@ -184,7 +184,7 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 
 	f, ok = files["translations.txt"]
 	if ok {
-		err = callWithOpenedReader(f, g.processTranslations)
+		err = callWithOpenedReader(g.processTranslations, f)
 		if err != nil {
 			return g, fmt.Errorf("error parsing translations.txt: %v", err)
 		}

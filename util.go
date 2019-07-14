@@ -9,7 +9,7 @@ type rcOpener interface {
 	Open() (io.ReadCloser, error)
 }
 
-func callWithOpenedReader(opener rcOpener, fn func(io.Reader) error) error {
+func callWithOpenedReader(fn func(io.Reader) error, opener rcOpener) error {
 	rc, err := opener.Open()
 	if err != nil {
 		return err

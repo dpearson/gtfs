@@ -36,15 +36,15 @@ func Test_callWithOpenedReader(t *testing.T) {
 		shouldError: false,
 	}
 
-	err := callWithOpenedReader(mockErroringOpener, successFn)
+	err := callWithOpenedReader(successFn, mockErroringOpener)
 	if err == nil {
 		t.Errorf("Expected error with mock erroring opener, but got none")
 	}
-	err = callWithOpenedReader(mockSuccessOpener, errFn)
+	err = callWithOpenedReader(errFn, mockSuccessOpener)
 	if err == nil {
 		t.Errorf("Expected error with mock erroring function, but got none")
 	}
-	err = callWithOpenedReader(mockSuccessOpener, successFn)
+	err = callWithOpenedReader(successFn, mockSuccessOpener)
 	if err != nil {
 		t.Errorf("Expected no error with mock success function, but got %v", err)
 	}
