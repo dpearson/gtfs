@@ -1,8 +1,8 @@
 package gtfs
 
 import (
-	"archive/zip"
 	"fmt"
+	"io"
 	"strconv"
 )
 
@@ -62,14 +62,8 @@ var stopFields = map[string]bool{
 	"platform_code": false,
 }
 
-func (g *GTFS) processStops(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, stopFields, g.strictMode)
+func (g *GTFS) processStops(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, stopFields, g.strictMode)
 	if err != nil {
 		return err
 	}

@@ -96,7 +96,7 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 		return g, fmt.Errorf("error parsing agency.txt: %v", err)
 	}
 
-	err = g.processStops(files["stops.txt"])
+	err = callWithOpenedReader(files["stops.txt"], g.processStops)
 	if err != nil {
 		return g, fmt.Errorf("error parsing stops.txt: %v", err)
 	}
