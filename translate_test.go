@@ -1,6 +1,15 @@
 package gtfs
 
-import "testing"
+import (
+	"io"
+	"reflect"
+	"strings"
+	"testing"
+)
+
+const testTranslationsCSVValid = `trans_id,lang,translation
+foo,en,bar
+foo,es,baz`
 
 func TestGTFS_Translate(t *testing.T) {
 	testTranslation1 := &Translation{
@@ -150,6 +159,83 @@ func TestGTFS_Translate(t *testing.T) {
 			}
 			if got := g.Translate(tt.args.sourceStr, tt.args.lang); got != tt.want {
 				t.Errorf("GTFS.Translate() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGTFS_processTranslations(t *testing.T) {
+	testTranslation1 := &Translation{
+		ID:          "foo",
+		Language:    "en",
+		Translation: "bar",
+	}
+	testTranslation2 := &Translation{
+		ID:          "foo",
+		Language:    "es",
+		Translation: "baz",
+	}
+
+	type fields struct {
+		strictMode bool
+	}
+	type args struct {
+		r io.Reader
+	}
+	tests := []struct {
+		name                 string
+		fields               fields
+		args                 args
+		wantErr              bool
+		wantTranslations     []*Translation
+		wantTranslationsById map[string]map[string]*Translation
+	}{
+		{
+			name: "Valid",
+			fields: fields{
+				strictMode: false,
+			},
+			args: args{
+				r: strings.NewReader(testTranslationsCSVValid),
+			},
+			wantErr: false,
+			wantTranslations: []*Translation{
+				testTranslation1,
+				testTranslation2,
+			},
+			wantTranslationsById: map[string]map[string]*Translation{
+				"foo": map[string]*Translation{
+					"en": testTranslation1,
+					"es": testTranslation2,
+				},
+			},
+		},
+		{
+			name: "Empty",
+			fields: fields{
+				strictMode: false,
+			},
+			args: args{
+				r: strings.NewReader(""),
+			},
+			wantErr:              true,
+			wantTranslations:     nil,
+			wantTranslationsById: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := &GTFS{
+				strictMode: tt.fields.strictMode,
+			}
+			if err := g.processTranslations(tt.args.r); (err != nil) != tt.wantErr {
+				t.Errorf("GTFS.processTranslations() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if !reflect.DeepEqual(g.Translations, tt.wantTranslations) {
+				t.Errorf("GTFS.processTranslations() Translations = %v, wantTranslations %v", g.Translations, tt.wantTranslations)
+			}
+			if !reflect.DeepEqual(g.translationsByID, tt.wantTranslationsById) {
+				t.Errorf("GTFS.processTranslations() translationsByID = %v, wantTranslationsById %v", g.translationsByID, tt.wantTranslationsById)
 			}
 		})
 	}

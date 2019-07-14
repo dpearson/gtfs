@@ -184,7 +184,7 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 
 	f, ok = files["translations.txt"]
 	if ok {
-		err = g.processTranslations(f)
+		err = callWithOpenedReader(f, g.processTranslations)
 		if err != nil {
 			return g, fmt.Errorf("error parsing translations.txt: %v", err)
 		}

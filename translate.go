@@ -1,8 +1,6 @@
 package gtfs
 
-import (
-	"archive/zip"
-)
+import "io"
 
 // A Translation is a single translation between an original string and another
 // language.
@@ -47,14 +45,8 @@ var translationFields = map[string]bool{
 	"translation": true,
 }
 
-func (g *GTFS) processTranslations(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, translationFields, g.strictMode)
+func (g *GTFS) processTranslations(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, translationFields, g.strictMode)
 	if err != nil {
 		return err
 	}
