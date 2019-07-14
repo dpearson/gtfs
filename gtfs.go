@@ -126,7 +126,7 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 
 	f, ok = files["shapes.txt"]
 	if ok {
-		err = g.processShapes(f)
+		err = callWithOpenedReader(f, g.processShapes)
 		if err != nil {
 			return g, fmt.Errorf("error parsing shapes.txt: %v", err)
 		}

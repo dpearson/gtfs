@@ -1,6 +1,54 @@
 package gtfs
 
-import "testing"
+import (
+	"fmt"
+	"io"
+	"io/ioutil"
+	"strings"
+	"testing"
+)
+
+type mockOpener struct {
+	rc          io.ReadCloser
+	shouldError bool
+}
+
+func (m *mockOpener) Open() (io.ReadCloser, error) {
+	if m.shouldError {
+		return m.rc, fmt.Errorf("mock error opening resource")
+	}
+
+	return m.rc, nil
+}
+
+func Test_callWithOpenedReader(t *testing.T) {
+	successFn := func(r io.Reader) error {
+		return nil
+	}
+	errFn := func(r io.Reader) error {
+		return fmt.Errorf("mock error in called function")
+	}
+	mockErroringOpener := &mockOpener{
+		shouldError: true,
+	}
+	mockSuccessOpener := &mockOpener{
+		rc:          ioutil.NopCloser(strings.NewReader("")),
+		shouldError: false,
+	}
+
+	err := callWithOpenedReader(mockErroringOpener, successFn)
+	if err == nil {
+		t.Errorf("Expected error with mock erroring opener, but got none")
+	}
+	err = callWithOpenedReader(mockSuccessOpener, errFn)
+	if err == nil {
+		t.Errorf("Expected error with mock erroring function, but got none")
+	}
+	err = callWithOpenedReader(mockSuccessOpener, successFn)
+	if err != nil {
+		t.Errorf("Expected no error with mock success function, but got %v", err)
+	}
+}
 
 func Test_parseBool(t *testing.T) {
 	type args struct {

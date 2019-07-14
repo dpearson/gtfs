@@ -1,8 +1,8 @@
 package gtfs
 
 import (
-	"archive/zip"
 	"fmt"
+	"io"
 	"sort"
 	"strconv"
 )
@@ -29,14 +29,8 @@ var shapeFields = map[string]bool{
 	"shape_dist_traveled": false,
 }
 
-func (g *GTFS) processShapes(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, shapeFields, g.strictMode)
+func (g *GTFS) processShapes(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, shapeFields, g.strictMode)
 	if err != nil {
 		return err
 	}
