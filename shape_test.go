@@ -58,7 +58,7 @@ func TestGTFS_processShapes(t *testing.T) {
 		args           args
 		wantErr        bool
 		wantShapes     []*Shape
-		wantShapesById map[string]*Shape
+		wantShapesByID map[string]*Shape
 	}{
 		{
 			name: "Valid",
@@ -72,7 +72,7 @@ func TestGTFS_processShapes(t *testing.T) {
 			wantShapes: []*Shape{
 				testShape1,
 			},
-			wantShapesById: map[string]*Shape{
+			wantShapesByID: map[string]*Shape{
 				"1": testShape1,
 			},
 		},
@@ -86,7 +86,7 @@ func TestGTFS_processShapes(t *testing.T) {
 			},
 			wantErr:        true,
 			wantShapes:     nil,
-			wantShapesById: nil,
+			wantShapesByID: nil,
 		},
 		{
 			name: "Invalid Latitude",
@@ -98,7 +98,7 @@ func TestGTFS_processShapes(t *testing.T) {
 			},
 			wantErr:        true,
 			wantShapes:     nil,
-			wantShapesById: nil,
+			wantShapesByID: nil,
 		},
 		{
 			name: "Invalid Longitude",
@@ -110,7 +110,7 @@ func TestGTFS_processShapes(t *testing.T) {
 			},
 			wantErr:        true,
 			wantShapes:     nil,
-			wantShapesById: nil,
+			wantShapesByID: nil,
 		},
 		{
 			name: "Invalid Sequence",
@@ -122,7 +122,7 @@ func TestGTFS_processShapes(t *testing.T) {
 			},
 			wantErr:        true,
 			wantShapes:     nil,
-			wantShapesById: nil,
+			wantShapesByID: nil,
 		},
 		{
 			name: "Invalid Distance",
@@ -134,7 +134,7 @@ func TestGTFS_processShapes(t *testing.T) {
 			},
 			wantErr:        true,
 			wantShapes:     nil,
-			wantShapesById: nil,
+			wantShapesByID: nil,
 		},
 	}
 	for _, tt := range tests {
@@ -148,8 +148,8 @@ func TestGTFS_processShapes(t *testing.T) {
 			if !reflect.DeepEqual(g.Shapes, tt.wantShapes) {
 				t.Errorf("GTFS.processShapes() Shapes = %v, wantShapes %v", g.Shapes, tt.wantShapes)
 			}
-			if !reflect.DeepEqual(g.shapesByID, tt.wantShapesById) {
-				t.Errorf("GTFS.processShapes() shapesByID = %v, wantShapesById %v", g.shapesByID, tt.wantShapesById)
+			if !reflect.DeepEqual(g.shapesByID, tt.wantShapesByID) {
+				t.Errorf("GTFS.processShapes() shapesByID = %v, wantShapesByID %v", g.shapesByID, tt.wantShapesByID)
 			}
 		})
 	}

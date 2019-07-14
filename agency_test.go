@@ -51,7 +51,7 @@ func TestGTFS_processAgencies(t *testing.T) {
 		args             args
 		wantErr          bool
 		wantAgencies     []*Agency
-		wantAgenciesById map[string]*Agency
+		wantAgenciesByID map[string]*Agency
 	}{
 		{
 			name: "Valid (with ID)",
@@ -65,7 +65,7 @@ func TestGTFS_processAgencies(t *testing.T) {
 			wantAgencies: []*Agency{
 				testAgency1,
 			},
-			wantAgenciesById: map[string]*Agency{
+			wantAgenciesByID: map[string]*Agency{
 				"1": testAgency1,
 			},
 		},
@@ -81,7 +81,7 @@ func TestGTFS_processAgencies(t *testing.T) {
 			wantAgencies: []*Agency{
 				testAgency2,
 			},
-			wantAgenciesById: map[string]*Agency{
+			wantAgenciesByID: map[string]*Agency{
 				"": testAgency2,
 			},
 		},
@@ -98,7 +98,7 @@ func TestGTFS_processAgencies(t *testing.T) {
 				testAgency2,
 				testAgency2,
 			},
-			wantAgenciesById: map[string]*Agency{
+			wantAgenciesByID: map[string]*Agency{
 				"": testAgency2,
 			},
 		},
@@ -112,7 +112,7 @@ func TestGTFS_processAgencies(t *testing.T) {
 			},
 			wantErr:          true,
 			wantAgencies:     nil,
-			wantAgenciesById: nil,
+			wantAgenciesByID: nil,
 		},
 	}
 	for _, tt := range tests {
@@ -126,8 +126,8 @@ func TestGTFS_processAgencies(t *testing.T) {
 			if !reflect.DeepEqual(g.Agencies, tt.wantAgencies) {
 				t.Errorf("GTFS.processAgencies() Agencies = %v, wantAgencies %v", g.Agencies, tt.wantAgencies)
 			}
-			if !reflect.DeepEqual(g.agenciesByID, tt.wantAgenciesById) {
-				t.Errorf("GTFS.processAgencies() agenciesByID = %v, wantAgenciesById %v", g.agenciesByID, tt.wantAgenciesById)
+			if !reflect.DeepEqual(g.agenciesByID, tt.wantAgenciesByID) {
+				t.Errorf("GTFS.processAgencies() agenciesByID = %v, wantAgenciesByID %v", g.agenciesByID, tt.wantAgenciesByID)
 			}
 		})
 	}
