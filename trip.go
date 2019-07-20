@@ -1,8 +1,8 @@
 package gtfs
 
 import (
-	"archive/zip"
 	"fmt"
+	"io"
 	"sort"
 	"strconv"
 )
@@ -167,14 +167,8 @@ var frequencyFields = map[string]bool{
 	"exact_times":  false,
 }
 
-func (g *GTFS) processTrips(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, tripFields, g.strictMode)
+func (g *GTFS) processTrips(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, tripFields, g.strictMode)
 	if err != nil {
 		return err
 	}
@@ -220,14 +214,8 @@ func (g *GTFS) processTrips(f *zip.File) error {
 	return nil
 }
 
-func (g *GTFS) processStopTimes(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, stopTimeFields, g.strictMode)
+func (g *GTFS) processStopTimes(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, stopTimeFields, g.strictMode)
 	if err != nil {
 		return err
 	}
@@ -294,14 +282,8 @@ func (g *GTFS) processStopTimes(f *zip.File) error {
 	return nil
 }
 
-func (g *GTFS) processFrequencies(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, frequencyFields, g.strictMode)
+func (g *GTFS) processFrequencies(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, frequencyFields, g.strictMode)
 	if err != nil {
 		return err
 	}

@@ -1,8 +1,8 @@
 package gtfs
 
 import (
-	"archive/zip"
 	"fmt"
+	"io"
 	"strconv"
 )
 
@@ -42,14 +42,8 @@ var routeFields = map[string]bool{
 	"route_sort_order": false,
 }
 
-func (g *GTFS) processRoutes(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, routeFields, g.strictMode)
+func (g *GTFS) processRoutes(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, routeFields, g.strictMode)
 	if err != nil {
 		return err
 	}

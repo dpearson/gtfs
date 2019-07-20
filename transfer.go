@@ -1,8 +1,8 @@
 package gtfs
 
 import (
-	"archive/zip"
 	"fmt"
+	"io"
 	"strconv"
 )
 
@@ -46,14 +46,8 @@ var transferFields = map[string]bool{
 	"min_transfer_time": false,
 }
 
-func (g *GTFS) processTransfers(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, transferFields, g.strictMode)
+func (g *GTFS) processTransfers(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, transferFields, g.strictMode)
 	if err != nil {
 		return err
 	}

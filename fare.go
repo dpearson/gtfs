@@ -1,8 +1,8 @@
 package gtfs
 
 import (
-	"archive/zip"
 	"fmt"
+	"io"
 	"strconv"
 )
 
@@ -52,14 +52,8 @@ var fareRuleFields = map[string]bool{
 	"contains_id":    false,
 }
 
-func (g *GTFS) processFares(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, fareFields, g.strictMode)
+func (g *GTFS) processFares(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, fareFields, g.strictMode)
 	if err != nil {
 		return err
 	}
@@ -111,14 +105,8 @@ func (g *GTFS) processFares(f *zip.File) error {
 	return nil
 }
 
-func (g *GTFS) processFareRules(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, fareRuleFields, g.strictMode)
+func (g *GTFS) processFareRules(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, fareRuleFields, g.strictMode)
 	if err != nil {
 		return err
 	}

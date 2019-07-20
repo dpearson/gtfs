@@ -1,8 +1,8 @@
 package gtfs
 
 import (
-	"archive/zip"
 	"fmt"
+	"io"
 )
 
 // FeedInfo specifies global information about a GTFS feed.
@@ -26,14 +26,8 @@ var feedInfoFields = map[string]bool{
 	"feed_version":        false,
 }
 
-func (g *GTFS) processFeedInfo(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, feedInfoFields, g.strictMode)
+func (g *GTFS) processFeedInfo(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, feedInfoFields, g.strictMode)
 	if err != nil {
 		return err
 	}

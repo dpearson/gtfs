@@ -1,8 +1,8 @@
 package gtfs
 
 import (
-	"archive/zip"
 	"fmt"
+	"io"
 )
 
 // A Service is a schedule of service over one or more routes.
@@ -43,14 +43,8 @@ var serviceDateFields = map[string]bool{
 	"exception_type": true,
 }
 
-func (g *GTFS) processServices(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, serviceFields, g.strictMode)
+func (g *GTFS) processServices(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, serviceFields, g.strictMode)
 	if err != nil {
 		return err
 	}
@@ -115,14 +109,8 @@ func (g *GTFS) processServices(f *zip.File) error {
 	return nil
 }
 
-func (g *GTFS) processServiceDates(f *zip.File) error {
-	rc, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer rc.Close() // nolint: errcheck
-
-	res, err := readCSVWithHeadings(rc, serviceDateFields, g.strictMode)
+func (g *GTFS) processServiceDates(r io.Reader) error {
+	res, err := readCSVWithHeadings(r, serviceDateFields, g.strictMode)
 	if err != nil {
 		return err
 	}

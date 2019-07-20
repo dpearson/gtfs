@@ -76,7 +76,7 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 		strictMode: opts.StrictMode,
 	}
 
-	files := map[string]*zip.File{}
+	files := map[string]rcOpener{}
 	for _, f := range r.File {
 		if _, ok := validFilenames[f.Name]; !ok {
 			continue
@@ -91,94 +91,100 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 		}
 	}
 
-	err = callWithOpenedReader(g.processAgencies, files["agency.txt"])
+	err = g.doLoad(files)
+
+	return g, err
+}
+
+func (g *GTFS) doLoad(files map[string]rcOpener) error {
+	err := callWithOpenedReader(g.processAgencies, files["agency.txt"])
 	if err != nil {
-		return g, fmt.Errorf("error parsing agency.txt: %v", err)
+		return fmt.Errorf("error parsing agency.txt: %v", err)
 	}
 
 	err = callWithOpenedReader(g.processStops, files["stops.txt"])
 	if err != nil {
-		return g, fmt.Errorf("error parsing stops.txt: %v", err)
+		return fmt.Errorf("error parsing stops.txt: %v", err)
 	}
 
-	err = g.processRoutes(files["routes.txt"])
+	err = callWithOpenedReader(g.processRoutes, files["routes.txt"])
 	if err != nil {
-		return g, fmt.Errorf("error parsing routes.txt: %v", err)
+		return fmt.Errorf("error parsing routes.txt: %v", err)
 	}
 
 	f, hasCalendar := files["calendar.txt"]
 	if hasCalendar {
-		err = g.processServices(f)
+		err = callWithOpenedReader(g.processServices, f)
 		if err != nil {
-			return g, fmt.Errorf("error parsing calendar.txt: %v", err)
+			return fmt.Errorf("error parsing calendar.txt: %v", err)
 		}
 	}
 
 	f, ok := files["calendar_dates.txt"]
 	if ok {
-		err = g.processServiceDates(f)
+		err = callWithOpenedReader(g.processServiceDates, f)
 		if err != nil {
-			return g, fmt.Errorf("error parsing calendar_dates.txt: %v", err)
+			return fmt.Errorf("error parsing calendar_dates.txt: %v", err)
 		}
 	} else if !hasCalendar {
-		return g, fmt.Errorf("either calendar.txt or calendar_dates.txt is required")
+		return fmt.Errorf("either calendar.txt or calendar_dates.txt is required")
 	}
 
 	f, ok = files["shapes.txt"]
 	if ok {
 		err = callWithOpenedReader(g.processShapes, f)
 		if err != nil {
-			return g, fmt.Errorf("error parsing shapes.txt: %v", err)
+			return fmt.Errorf("error parsing shapes.txt: %v", err)
 		}
 	}
 
-	err = g.processTrips(files["trips.txt"])
+	err = callWithOpenedReader(g.processTrips, files["trips.txt"])
 	if err != nil {
-		return g, fmt.Errorf("error parsing trips.txt: %v", err)
+		return fmt.Errorf("error parsing trips.txt: %v", err)
 	}
 
-	err = g.processStopTimes(files["stop_times.txt"])
+	err = callWithOpenedReader(g.processStopTimes, files["stop_times.txt"])
 	if err != nil {
-		return g, fmt.Errorf("error parsing stop_times.txt: %v", err)
+		return fmt.Errorf("error parsing stop_times.txt: %v", err)
 	}
 
 	f, ok = files["fare_attributes.txt"]
 	if ok {
-		err = g.processFares(f)
+		err = callWithOpenedReader(g.processFares, f)
 		if err != nil {
-			return g, fmt.Errorf("error parsing fare_attributes.txt: %v", err)
+			return fmt.Errorf("error parsing fare_attributes.txt: %v", err)
 		}
 
 		f, ok = files["fare_rules.txt"]
 		if ok {
-			err = g.processFareRules(f)
+			err = callWithOpenedReader(g.processFareRules, f)
 			if err != nil {
-				return g, fmt.Errorf("error parsing fare_rules.txt: %v", err)
+				return fmt.Errorf("error parsing fare_rules.txt: %v", err)
 			}
 		}
 	}
 
 	f, ok = files["frequencies.txt"]
 	if ok {
-		err = g.processFrequencies(f)
+		err = callWithOpenedReader(g.processFrequencies, f)
 		if err != nil {
-			return g, fmt.Errorf("error parsing frequencies.txt: %v", err)
+			return fmt.Errorf("error parsing frequencies.txt: %v", err)
 		}
 	}
 
 	f, ok = files["transfers.txt"]
 	if ok {
-		err = g.processTransfers(f)
+		err = callWithOpenedReader(g.processTransfers, f)
 		if err != nil {
-			return g, fmt.Errorf("error parsing transfers.txt: %v", err)
+			return fmt.Errorf("error parsing transfers.txt: %v", err)
 		}
 	}
 
 	f, ok = files["feed_info.txt"]
 	if ok {
-		err = g.processFeedInfo(f)
+		err = callWithOpenedReader(g.processFeedInfo, f)
 		if err != nil {
-			return g, fmt.Errorf("error parsing feed_info.txt: %v", err)
+			return fmt.Errorf("error parsing feed_info.txt: %v", err)
 		}
 	}
 
@@ -186,9 +192,9 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 	if ok {
 		err = callWithOpenedReader(g.processTranslations, f)
 		if err != nil {
-			return g, fmt.Errorf("error parsing translations.txt: %v", err)
+			return fmt.Errorf("error parsing translations.txt: %v", err)
 		}
 	}
 
-	return g, nil
+	return nil
 }
