@@ -204,3 +204,133 @@ func TestGTFS_agencyByID(t *testing.T) {
 		})
 	}
 }
+
+func TestGTFS_agencyByIDOrDefault(t *testing.T) {
+	testAgency1 := &Agency{
+		ID: "test_agency_1",
+	}
+	testAgency2 := &Agency{
+		ID: "test_agency_2",
+	}
+	type fields struct {
+		Agencies     []*Agency
+		agenciesByID map[string]*Agency
+	}
+	type args struct {
+		id string
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *Agency
+		wantErr bool
+	}{
+		{
+			name: "Exists",
+			fields: fields{
+				Agencies: []*Agency{
+					testAgency1,
+				},
+				agenciesByID: map[string]*Agency{
+					"test_agency_1": testAgency1,
+				},
+			},
+			args: args{
+				id: "test_agency_1",
+			},
+			want:    testAgency1,
+			wantErr: false,
+		},
+		{
+			name: "Doesn't Exist",
+			fields: fields{
+				Agencies: []*Agency{
+					testAgency1,
+				},
+				agenciesByID: map[string]*Agency{
+					"test_agency_1": testAgency1,
+				},
+			},
+			args: args{
+				id: "test_agency_2",
+			},
+			want:    nil,
+			wantErr: false,
+		},
+		{
+			name: "Empty (No Agencies)",
+			fields: fields{
+				Agencies:     []*Agency{},
+				agenciesByID: map[string]*Agency{},
+			},
+			args: args{
+				id: "",
+			},
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name: "Empty (1 Agency)",
+			fields: fields{
+				Agencies: []*Agency{
+					testAgency1,
+				},
+				agenciesByID: map[string]*Agency{
+					"test_agency_1": testAgency1,
+				},
+			},
+			args: args{
+				id: "",
+			},
+			want:    testAgency1,
+			wantErr: false,
+		},
+		{
+			name: "Empty (2 Agencies)",
+			fields: fields{
+				Agencies: []*Agency{
+					testAgency1,
+					testAgency2,
+				},
+				agenciesByID: map[string]*Agency{
+					"test_agency_1": testAgency1,
+					"test_agency_2": testAgency2,
+				},
+			},
+			args: args{
+				id: "",
+			},
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name: "nil map",
+			fields: fields{
+				Agencies:     nil,
+				agenciesByID: nil,
+			},
+			args: args{
+				id: "test_agency_1",
+			},
+			want:    nil,
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := &GTFS{
+				Agencies:     tt.fields.Agencies,
+				agenciesByID: tt.fields.agenciesByID,
+			}
+			got, err := g.agencyByIDOrDefault(tt.args.id)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GTFS.agencyByIDOrDefault() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GTFS.agencyByIDOrDefault() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

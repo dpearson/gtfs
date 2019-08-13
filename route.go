@@ -51,13 +51,9 @@ func (g *GTFS) processRoutes(r io.Reader) error {
 	g.routesByID = map[string]*Route{}
 
 	for _, row := range res {
-		sortOrder := uint64(0)
-		sortOrderStr := row["route_sort_order"]
-		if sortOrderStr != "" {
-			sortOrder, err = strconv.ParseUint(row["route_sort_order"], 10, 64)
-			if err != nil {
-				return fmt.Errorf("invalid route sort order: %v", err)
-			}
+		sortOrder, err := parseRouteSortOrder(row["route_sort_order"])
+		if err != nil {
+			return fmt.Errorf("invalid route sort order: %v", err)
 		}
 
 		routeType, err := parseRouteType(row["route_type"])
@@ -65,14 +61,9 @@ func (g *GTFS) processRoutes(r io.Reader) error {
 			return err
 		}
 
-		var agency *Agency
-		agencyID := row["agency_id"]
-		if agencyID != "" {
-			agency = g.agencyByID(row["agency_id"])
-		} else if len(g.Agencies) != 1 {
-			return fmt.Errorf("no agency_id specified, but there are %d agencies", len(g.Agencies))
-		} else {
-			agency = g.Agencies[0]
+		agency, err := g.agencyByIDOrDefault(row["agency_id"])
+		if err != nil {
+			return err
 		}
 
 		r := &Route{
@@ -105,4 +96,12 @@ func (g *GTFS) processRoutes(r io.Reader) error {
 
 func (g *GTFS) routeByID(id string) *Route {
 	return g.routesByID[id]
+}
+
+func parseRouteSortOrder(val string) (uint64, error) {
+	if val == "" {
+		return 0, nil
+	}
+
+	return strconv.ParseUint(val, 10, 64)
 }

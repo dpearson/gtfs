@@ -67,3 +67,22 @@ func (g *GTFS) processAgencies(r io.Reader) error {
 func (g *GTFS) agencyByID(id string) *Agency {
 	return g.agenciesByID[id]
 }
+
+// agencyByIDOrDefault gets the agency specified by id, unless id is empty.
+//
+// If id is empty, it returns either the only agency contained within the file
+// or, if there is more than one agency defined, an error.
+//
+// It is the caller's responsibility to ensure that processAgencies has been
+// called before invoking this function.
+func (g *GTFS) agencyByIDOrDefault(id string) (*Agency, error) {
+	if id != "" {
+		return g.agencyByID(id), nil
+	}
+
+	if len(g.Agencies) != 1 {
+		return nil, fmt.Errorf("no agency_id specified, but there are %d agencies", len(g.Agencies))
+	}
+
+	return g.Agencies[0], nil
+}
