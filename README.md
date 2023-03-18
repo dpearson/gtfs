@@ -1,6 +1,6 @@
 # gtfs #
 
-[![Build Status](https://travis-ci.org/dpearson/gtfs.svg?branch=master)](https://travis-ci.org/dpearson/gtfs)
+[![Build Status](https://github.com/dpearson/gtfs/actions/workflows/go.yml/badge.svg?branch=master)](https://github.com/dpearson/gtfs/actions)
 [![GoDoc](https://godoc.org/github.com/dpearson/gtfs?status.svg)](https://godoc.org/github.com/dpearson/gtfs)
 
 This package allows [General Transit Feed Specification](https://developers.google.com/transit/gtfs/) files to be read and manipulated from Go.
