@@ -7,6 +7,7 @@ This package allows [General Transit Feed Specification](https://developers.goog
 
 In addition to basic GTFS support, this package also supports the following [Google Transit Extensions to GTFS](https://developers.google.com/transit/gtfs/reference/gtfs-extensions):
 
+* [Extended GTFS route types](// See: https://developers.google.com/transit/gtfs/reference/extended-route-types)
 * [Station vehicle types](https://developers.google.com/transit/gtfs/reference/gtfs-extensions#station-vehicle-types)
 * [Station platforms](https://developers.google.com/transit/gtfs/reference/gtfs-extensions#station-platforms)
 * [Trip diversions](https://developers.google.com/transit/gtfs/reference/gtfs-extensions#trip-diversions)
@@ -29,7 +30,7 @@ This package has no dependencies outside of the standard library.
 ```
 MIT License
 
-Copyright (c) 2018 David Pearson
+Copyright (c) 2018-2023 David Pearson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

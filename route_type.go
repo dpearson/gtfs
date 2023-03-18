@@ -38,6 +38,8 @@ const (
 	//
 	// The following types are extended route types proposed by Google, although
 	// they are not part of the GTFS standard.
+	//
+	// See: https://developers.google.com/transit/gtfs/reference/extended-route-types
 
 	RouteTypeExtendedRailwayService
 	RouteTypeExtendedHighSpeedRail
@@ -48,7 +50,7 @@ const (
 	RouteTypeExtendedRegionalRail
 	RouteTypeExtendedTouristRail
 	RouteTypeExtendedRailShuttle
-	RouteTypeExtendedSuburbanRail // used for route type codes 109 and 300
+	RouteTypeExtendedSuburbanRail
 	RouteTypeExtendedReplacementRail
 	RouteTypeExtendedSpecialRail
 	RouteTypeExtendedLorryTransportRail
@@ -70,22 +72,81 @@ const (
 	RouteTypeExtendedAllCoach
 
 	RouteTypeExtendedUrbanRailService
-	RouteTypeExtendedMetro       // used for route type codes 401 and 500
-	RouteTypeExtendedUnderground // used for route type codes 402 and 600
+	RouteTypeExtendedMetro
+	RouteTypeExtendedUnderground
 	RouteTypeExtendedUrbanRail
 	RouteTypeExtendedAllUrbanRail
 	RouteTypeExtendedMonorail
+
+	RouteTypeExtendedBusService
+	RouteTypeExtendedRegionalBusService
+	RouteTypeExtendedExpressBusService
+	RouteTypeExtendedStoppingBusService
+	RouteTypeExtendedLocalBusService
+	RouteTypeExtendedNightBusService
+	RouteTypeExtendedPostBusService
+	RouteTypeExtendedSpecialNeedsBusService
+	RouteTypeExtendedMobilityBusService
+	RouteTypeExtendedMobilityBusForRegisteredDisabledService
+	RouteTypeExtendedSightseeingBus
+	RouteTypeExtendedShuttleBus
+	RouteTypeExtendedSchoolBus
+	RouteTypeExtendedSchoolAndPublicServiceBus
+	RouteTypeExtendedRailReplacementBusService
+	RouteTypeExtendedDemandAndResponseBusService
+	RouteTypeExtendedAllBusServices
+
+	RouteTypeExtendedTrolleybusService
+
+	RouteTypeExtendedTramService
+	RouteTypeExtendedCityTramService
+	RouteTypeExtendedLocalTramService
+	RouteTypeExtendedRegionalTramService
+	RouteTypeExtendedSightseeingTramService
+	RouteTypeExtendedShuttleTramService
+	RouteTypeExtendedAllTramServices
+
+	RouteTypeExtendedWaterTransportService
+
+	RouteTypeExtendedAirService
+
+	RouteTypeExtendedFerryService
+
+	RouteTypeExtendedAerialLiftService
+	RouteTypeExtendedTelecabinService
+	RouteTypeExtendedCableCarService
+	RouteTypeExtendedElevatorService
+	RouteTypeExtendedChairLiftService
+	RouteTypeExtendedDragLiftService
+	RouteTypeExtendedSmallTelecabinService
+	RouteTypeExtendedAllTelecabinServices
+
+	RouteTypeExtendedFunicularService
+
+	RouteTypeExtendedTaxiService
+	RouteTypeExtendedCommunalTaxiService
+	RouteTypeExtendedWaterTaxiService
+	RouteTypeExtendedRailTaxiService
+	RouteTypeExtendedBikeTaxiService
+	RouteTypeExtendedLicensedTaxiService
+	RouteTypeExtendedPrivateHireServiceVehicle
+	RouteTypeExtendedAllTaxiServices
+
+	RouteTypeExtendedMiscellaneousService
+	RouteTypeExtendedHorseDrawnCarriage
 )
 
 var routeTypes = map[string]RouteType{
-	"0":   RouteTypeLightRail,
-	"1":   RouteTypeSubway,
-	"2":   RouteTypeRail,
-	"3":   RouteTypeBus,
-	"4":   RouteTypeFerry,
-	"5":   RouteTypeCableCar,
-	"6":   RouteTypeGondola,
-	"7":   RouteTypeFunicular,
+	"0": RouteTypeLightRail,
+	"1": RouteTypeSubway,
+	"2": RouteTypeRail,
+	"3": RouteTypeBus,
+	"4": RouteTypeFerry,
+	"5": RouteTypeCableCar,
+	"6": RouteTypeGondola,
+	"7": RouteTypeFunicular,
+
+	// See: https://developers.google.com/transit/gtfs/reference/extended-route-types
 	"100": RouteTypeExtendedRailwayService,
 	"101": RouteTypeExtendedHighSpeedRail,
 	"102": RouteTypeExtendedLongDistanceRail,
@@ -104,6 +165,7 @@ var routeTypes = map[string]RouteType{
 	"115": RouteTypeExtendedVehicleTransportRail,
 	"116": RouteTypeExtendedRackAndPinionRail,
 	"117": RouteTypeExtendedAdditionalRail,
+
 	"200": RouteTypeExtendedCoachService,
 	"201": RouteTypeExtendedInternationalCoach,
 	"202": RouteTypeExtendedNationalCoach,
@@ -114,15 +176,70 @@ var routeTypes = map[string]RouteType{
 	"207": RouteTypeExtendedTouristCoach,
 	"208": RouteTypeExtendedCommuterCoach,
 	"209": RouteTypeExtendedAllCoach,
-	"300": RouteTypeExtendedSuburbanRail,
+
 	"400": RouteTypeExtendedUrbanRailService,
 	"401": RouteTypeExtendedMetro,
 	"402": RouteTypeExtendedUnderground,
 	"403": RouteTypeExtendedUrbanRail,
 	"404": RouteTypeExtendedAllUrbanRail,
 	"405": RouteTypeExtendedMonorail,
-	"500": RouteTypeExtendedMetro,
-	"600": RouteTypeExtendedUnderground,
+
+	"700": RouteTypeExtendedBusService,
+	"701": RouteTypeExtendedRegionalBusService,
+	"702": RouteTypeExtendedExpressBusService,
+	"703": RouteTypeExtendedStoppingBusService,
+	"704": RouteTypeExtendedLocalBusService,
+	"705": RouteTypeExtendedNightBusService,
+	"706": RouteTypeExtendedPostBusService,
+	"707": RouteTypeExtendedSpecialNeedsBusService,
+	"708": RouteTypeExtendedMobilityBusService,
+	"709": RouteTypeExtendedMobilityBusForRegisteredDisabledService,
+	"710": RouteTypeExtendedSightseeingBus,
+	"711": RouteTypeExtendedShuttleBus,
+	"712": RouteTypeExtendedSchoolBus,
+	"713": RouteTypeExtendedSchoolAndPublicServiceBus,
+	"714": RouteTypeExtendedRailReplacementBusService,
+	"715": RouteTypeExtendedDemandAndResponseBusService,
+	"716": RouteTypeExtendedAllBusServices,
+
+	"800": RouteTypeExtendedTrolleybusService,
+
+	"900": RouteTypeExtendedTramService,
+	"901": RouteTypeExtendedCityTramService,
+	"902": RouteTypeExtendedLocalTramService,
+	"903": RouteTypeExtendedRegionalTramService,
+	"904": RouteTypeExtendedSightseeingTramService,
+	"905": RouteTypeExtendedShuttleTramService,
+	"906": RouteTypeExtendedAllTramServices,
+
+	"1000": RouteTypeExtendedWaterTransportService,
+
+	"1100": RouteTypeExtendedAirService,
+
+	"1200": RouteTypeExtendedFerryService,
+
+	"1300": RouteTypeExtendedAerialLiftService,
+	"1301": RouteTypeExtendedTelecabinService,
+	"1302": RouteTypeExtendedCableCarService,
+	"1303": RouteTypeExtendedElevatorService,
+	"1304": RouteTypeExtendedChairLiftService,
+	"1305": RouteTypeExtendedDragLiftService,
+	"1306": RouteTypeExtendedSmallTelecabinService,
+	"1307": RouteTypeExtendedAllTelecabinServices,
+
+	"1400": RouteTypeExtendedFunicularService,
+
+	"1500": RouteTypeExtendedTaxiService,
+	"1501": RouteTypeExtendedCommunalTaxiService,
+	"1502": RouteTypeExtendedWaterTaxiService,
+	"1503": RouteTypeExtendedRailTaxiService,
+	"1504": RouteTypeExtendedBikeTaxiService,
+	"1505": RouteTypeExtendedLicensedTaxiService,
+	"1506": RouteTypeExtendedPrivateHireServiceVehicle,
+	"1507": RouteTypeExtendedAllTaxiServices,
+
+	"1700": RouteTypeExtendedMiscellaneousService,
+	"1702": RouteTypeExtendedHorseDrawnCarriage,
 }
 
 func parseRouteType(val string) (RouteType, error) {
