@@ -34,6 +34,12 @@ const (
 	// RouteTypeFunicular indicates that the route is a funicular route.
 	RouteTypeFunicular
 
+	// RouteTypeTrolleybus indicates that the route is a trolleybus route.
+	RouteTypeTrolleybus
+
+	// RouteTypeMonorail indicates that the route is a monorail route.
+	RouteTypeMonorail
+
 	// EXTENDED ROUTE TYPES
 	//
 	// The following types are extended route types proposed by Google, although
@@ -137,14 +143,16 @@ const (
 )
 
 var routeTypes = map[string]RouteType{
-	"0": RouteTypeLightRail,
-	"1": RouteTypeSubway,
-	"2": RouteTypeRail,
-	"3": RouteTypeBus,
-	"4": RouteTypeFerry,
-	"5": RouteTypeCableCar,
-	"6": RouteTypeGondola,
-	"7": RouteTypeFunicular,
+	"0":  RouteTypeLightRail,
+	"1":  RouteTypeSubway,
+	"2":  RouteTypeRail,
+	"3":  RouteTypeBus,
+	"4":  RouteTypeFerry,
+	"5":  RouteTypeCableCar,
+	"6":  RouteTypeGondola,
+	"7":  RouteTypeFunicular,
+	"11": RouteTypeTrolleybus,
+	"12": RouteTypeMonorail,
 
 	// See: https://developers.google.com/transit/gtfs/reference/extended-route-types
 	"100": RouteTypeExtendedRailwayService,
