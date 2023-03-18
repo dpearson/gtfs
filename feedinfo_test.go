@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-const testFeedInfoCSVValid = `feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version
-Test Publisher,http://feedinfo.example.com,en,,,3`
+const testFeedInfoCSVValid = `feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version,feed_contact_email,feed_contact_url
+Test Publisher,http://feedinfo.example.com,en,,,3,foo@example.com,http://feedinfo.example.com/contact`
 
 const testFeedInfoCSVInvalidMultipleRows = `feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version
 Test Publisher,http://feedinfo.example.com,en,,,3
@@ -22,6 +22,8 @@ func TestGTFS_processFeedInfo(t *testing.T) {
 		StartDate:     "",
 		EndDate:       "",
 		Version:       "3",
+		ContactEmail:  "foo@example.com",
+		ContactURL:    "http://feedinfo.example.com/contact",
 	}
 	type fields struct {
 		FeedInfo FeedInfo

@@ -15,6 +15,8 @@ type FeedInfo struct {
 	StartDate     string
 	EndDate       string
 	Version       string
+	ContactEmail  string
+	ContactURL    string
 }
 
 var feedInfoFields = map[string]bool{
@@ -24,6 +26,8 @@ var feedInfoFields = map[string]bool{
 	"feed_start_date":     false,
 	"feed_end_date":       false,
 	"feed_version":        false,
+	"feed_contact_email":  false,
+	"feed_contact_url":    false,
 }
 
 func (g *GTFS) processFeedInfo(r io.Reader) error {
@@ -44,6 +48,8 @@ func (g *GTFS) processFeedInfo(r io.Reader) error {
 		StartDate:     row["feed_start_date"],
 		EndDate:       row["feed_end_date"],
 		Version:       row["feed_version"],
+		ContactEmail:  row["feed_contact_email"],
+		ContactURL:    row["feed_contact_url"],
 	}
 
 	return nil
