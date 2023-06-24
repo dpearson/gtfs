@@ -51,6 +51,10 @@ type ParsingOptions struct {
 	StrictMode bool
 }
 
+var defaultOptions = ParsingOptions{
+	StrictMode: false,
+}
+
 // Load reads a GTFS feed, which is expected to be contained within a ZIP file,
 // from filePath.
 //
@@ -58,9 +62,16 @@ type ParsingOptions struct {
 // that can be ignored are ignored). For full control over options used when
 // parsing, use LoadWithOptions instead.
 func Load(filePath string) (*GTFS, error) {
-	return LoadWithOptions(filePath, ParsingOptions{
-		StrictMode: false,
-	})
+	return LoadWithOptions(filePath, defaultOptions)
+}
+
+// LoadFromReader reads a GTFS feed from a *zip.Reader.
+//
+// This function loads a GTFS file as permissively as possible (i.e. all errors
+// that can be ignored are ignored). For full control over options used when
+// parsing, use LoadWithOptions instead.
+func LoadFromReader(r *zip.Reader) (*GTFS, error) {
+	return LoadFromReaderWithOptions(r, defaultOptions)
 }
 
 // LoadWithOptions reads a GTFS feed, which is expected to be contained within
@@ -72,6 +83,12 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 	}
 	defer r.Close() // nolint: errcheck
 
+	return LoadFromReaderWithOptions(&r.Reader, opts)
+}
+
+// LoadFromReaderWithOptions reads a GTFS feed from a *zip.Reader using the specified options when
+// parsing.
+func LoadFromReaderWithOptions(r *zip.Reader, opts ParsingOptions) (*GTFS, error) {
 	g := &GTFS{
 		strictMode: opts.StrictMode,
 	}
@@ -91,7 +108,7 @@ func LoadWithOptions(filePath string, opts ParsingOptions) (*GTFS, error) {
 		}
 	}
 
-	err = g.doLoad(files)
+	err := g.doLoad(files)
 
 	return g, err
 }
