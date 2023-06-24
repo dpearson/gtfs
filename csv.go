@@ -19,12 +19,20 @@ func readCSVWithHeadings(r io.Reader, fields map[string]bool, strictMode bool) (
 		return nil, err
 	}
 
-	for _, h := range headers {
+	skippedColumns := map[int]bool{}
+	for i, h := range headers {
+		headerFields = append(headerFields, h)
+
+		// If we don't recognize this field, mark it as skipped so we can pass over it when reading
+		// individual rows
 		if _, ok := fields[h]; !ok {
+			if strictMode {
+				return res, fmt.Errorf("invalid field name: %s", h)
+			}
+
+			skippedColumns[i] = true
 			continue
 		}
-
-		headerFields = append(headerFields, h)
 	}
 
 	for {
@@ -39,6 +47,10 @@ func readCSVWithHeadings(r io.Reader, fields map[string]bool, strictMode bool) (
 
 		rowMap := map[string]string{}
 		for i, v := range row {
+			if _, skip := skippedColumns[i]; skip {
+				continue
+			}
+
 			if i >= len(headerFields) {
 				if strictMode {
 					return res, fmt.Errorf("unexpected number of fields in row: %d", i+1)

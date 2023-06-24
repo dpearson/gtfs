@@ -116,7 +116,7 @@ func Test_readCSVWithHeadings(t *testing.T) {
 		{
 			name: "Extra Field (non-strict)",
 			args: args{
-				rc: strings.NewReader("agency_id,agency_name,agency_url,agency_timezone,agency_lang,foo\n1,Test Agency,http://example.com,America/New_York,en,abc"),
+				rc: strings.NewReader("agency_id,agency_name,agency_url,agency_timezone,foo,agency_lang\n1,Test Agency,http://example.com,America/New_York,abc,en"),
 				fields: map[string]bool{
 					"agency_id":       true,
 					"agency_name":     true,
@@ -140,7 +140,7 @@ func Test_readCSVWithHeadings(t *testing.T) {
 		{
 			name: "Extra Field (strict)",
 			args: args{
-				rc: strings.NewReader("agency_id,agency_name,agency_url,agency_timezone,agency_lang,foo\n1,Test Agency,http://example.com,America/New_York,en,abc"),
+				rc: strings.NewReader("agency_id,agency_name,agency_url,agency_timezone,foo,agency_lang\n1,Test Agency,http://example.com,America/New_York,abc,en"),
 				fields: map[string]bool{
 					"agency_id":       true,
 					"agency_name":     true,
